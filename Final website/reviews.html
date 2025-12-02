@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Reviews - Quickfixx</title>
+    <link rel="stylesheet" href="brand-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .reviews-wrapper {
+            background: var(--color-background);
+            min-height: 100vh;
+        }
+        
+        [data-theme="dark"] .reviews-wrapper {
+            background: var(--color-background-dark);
+        }
+        
+        .reviews-hero {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            color: white;
+            padding: 100px 0 60px;
+            text-align: center;
+            border-radius: 0 0 30px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .reviews-hero:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=1600&q=80') center/cover;
+            opacity: 0.1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .reviews-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .reviews-title span {
+            color: var(--color-accent-gold);
+        }
+        
+        .rating-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 50px auto 0;
+            max-width: 1000px;
+        }
+        
+        .summary-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .overall-rating {
+            font-size: 4rem;
+            font-weight: 700;
+            margin: 15px 0;
+            color: var(--color-accent-gold);
+        }
+        
+        .star-distribution {
+            margin-top: 20px;
+        }
+        
+        .star-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .star-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .star-fill {
+            height: 100%;
+            background: var(--color-accent-gold);
+            border-radius: 4px;
+        }
+        
+        .reviews-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .review-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            color: var(--color-text-light);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        [data-theme="dark"] .filter-btn {
+            background: var(--color-surface-dark);
+            border-color: var(--color-border-dark);
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--color-accent-gold);
+            border-color: var(--color-accent-gold);
+            color: var(--color-primary);
+        }
+        
+        .sort-select {
+            padding: 10px 20px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            background: var(--color-surface);
+            color: var(--color-text);
+            font-family: inherit;
+        }
+        
+        [data-theme="dark"] .sort-select {
+            background: var(--color-surface-dark);
+            border-color: var(--color-border-dark);
+            color: var(--color-text-dark);
+        }
+        
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        @media (max-width: 768px) {
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .review-card {
+            background: var(--color-surface);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border: 1px solid var(--color-border);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        [data-theme="dark"] .review-card {
+            background: var(--color-surface-dark);
+            border-color: var(--color-border-dark);
+        }
+        
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .reviewer-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .reviewer-name {
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+        
+        [data-theme="dark"] .reviewer-name {
+            color: var(--color-primary-dark);
+        }
+        
+        .review-date {
+            color: var(--color-text-light);
+            font-size: 0.9rem;
+        }
+        
+        .review-stars {
+            color: var(--color-accent-gold);
+            font-size: 1.2rem;
+            margin: 15px 0;
+        }
+        
+        .review-content {
+            color: var(--color-text);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        [data-theme="dark"] .review-content {
+            color: var(--color-text-dark);
+        }
+        
+        .review-service {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--color-accent-gold);
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 15px;
+        }
+        
+        .review-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--color-border);
+        }
+        
+        .action-btn {
+            background: transparent;
+            border: none;
+            color: var(--color-text-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        
+        .action-btn:hover {
+            color: var(--color-accent-gold);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 50px;
+        }
+        
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            background: var(--color-surface);
+            color: var(--color-text);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .page-btn.active {
+            background: var(--color-accent-gold);
+            border-color: var(--color-accent-gold);
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+        
+        .page-btn:hover:not(.active) {
+            border-color: var(--color-accent-gold);
+        }
+        
+        .submit-review-section {
+            background: var(--color-surface);
+            border-radius: 15px;
+            padding: 40px;
+            margin-top: 60px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border: 1px solid var(--color-border);
+        }
+        
+        [data-theme="dark"] .submit-review-section {
+            background: var(--color-surface-dark);
+            border-color: var(--color-border-dark);
+        }
+        
+        .rating-input {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+        
+        .rating-star {
+            font-size: 2rem;
+            color: var(--color-border);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .rating-star:hover,
+        .rating-star:hover ~ .rating-star {
+            color: var(--color-accent-gold);
+        }
+        
+        .rating-star.selected {
+            color: var(--color-accent-gold);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-family: inherit;
+            background: var(--color-background);
+            color: var(--color-text);
+        }
+        
+        [data-theme="dark"] .form-input {
+            background: var(--color-background-dark);
+            border-color: var(--color-border-dark);
+            color: var(--color-text-dark);
+        }
+        
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            background: rgba(255,255,255,0.15);
+            padding: 12px 25px;
+            border-radius: 8px;
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            transition: all 0.3s;
+        }
+        
+        .back-to-home:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .reviews-title {
+                font-size: 2.5rem;
+            }
+            
+            .back-to-home {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 30px;
+                display: inline-block;
+            }
+            
+            .reviews-hero {
+                padding: 80px 0 40px;
+            }
+            
+            .rating-summary {
+                gap: 20px;
+            }
+        }
+        
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--color-accent-green);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+        
+        .review-images {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .review-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .review-image:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="reviews-wrapper">
+    <!-- Hero Section -->
+    <section class="reviews-hero">
+        <a href="index.html" class="back-to-home">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+        
+        <div class="hero-content">
+            <h1 class="reviews-title">
+                <i class="fas fa-star"></i> Quick<span>fixx</span> Reviews
+            </h1>
+            <p style="font-size: 1.2rem; opacity: 0.9; max-width: 700px; margin: 0 auto;">
+                Real customer feedback and ratings for our services
+            </p>
+            
+            <!-- Rating Summary -->
+            <div class="rating-summary">
+                <div class="summary-card">
+                    <h3 style="margin-bottom: 10px;">Overall Rating</h3>
+                    <div class="overall-rating">4.8</div>
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p style="margin-top: 10px; opacity: 0.9;">Based on 156 reviews</p>
+                </div>
+                
+                <div class="summary-card">
+                    <h3 style="margin-bottom: 20px;">Rating Distribution</h3>
+                    <div class="star-distribution">
+                        <div class="star-row">
+                            <span>5★</span>
+                            <div class="star-bar">
+                                <div class="star-fill" style="width: 75%;"></div>
+                            </div>
+                            <span>75%</span>
+                        </div>
+                        <div class="star-row">
+                            <span>4★</span>
+                            <div class="star-bar">
+                                <div class="star-fill" style="width: 15%;"></div>
+                            </div>
+                            <span>15%</span>
+                        </div>
+                        <div class="star-row">
+                            <span>3★</span>
+                            <div class="star-bar">
+                                <div class="star-fill" style="width: 5%;"></div>
+                            </div>
+                            <span>5%</span>
+                        </div>
+                        <div class="star-row">
+                            <span>2★</span>
+                            <div class="star-bar">
+                                <div class="star-fill" style="width: 3%;"></div>
+                            </div>
+                            <span>3%</span>
+                        </div>
+                        <div class="star-row">
+                            <span>1★</span>
+                            <div class="star-bar">
+                                <div class="star-fill" style="width: 2%;"></div>
+                            </div>
+                            <span>2%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="summary-card">
+                    <h3 style="margin-bottom: 20px;">Service Ratings</h3>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>Car Booking</span>
+                                <span>4.9★</span>
+                            </div>
+                            <div style="height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-top: 5px;">
+                                <div style="height: 100%; background: var(--color-accent-gold); width: 98%; border-radius: 2px;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>Electrical</span>
+                                <span>4.8★</span>
+                            </div>
+                            <div style="height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-top: 5px;">
+                                <div style="height: 100%; background: var(--color-accent-gold); width: 96%; border-radius: 2px;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>Plumbing</span>
+                                <span>4.7★</span>
+                            </div>
+                            <div style="height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-top: 5px;">
+                                <div style="height: 100%; background: var(--color-accent-gold); width: 94%; border-radius: 2px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Container -->
+    <div class="reviews-container">
+        <!-- Reviews Header with Filters -->
+        <div class="reviews-header">
+            <div>
+                <h2 style="color: var(--color-primary);">Customer Reviews</h2>
+                <p style="color: var(--color-text-light); margin-top: 5px;">What our customers say about our services</p>
+            </div>
+            
+            <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+                <div class="review-filters">
+                    <button class="filter-btn active" data-filter="all">All Reviews</button>
+                    <button class="filter-btn" data-filter="5">5★ Only</button>
+                    <button class="filter-btn" data-filter="4">4★ & Above</button>
+                    <button class="filter-btn" data-filter="recent">Recent</button>
+                </div>
+                
+                <select class="sort-select" id="sortSelect">
+                    <option value="newest">Newest First</option>
+                    <option value="highest">Highest Rated</option>
+                    <option value="lowest">Lowest Rated</option>
+                    <option value="most-helpful">Most Helpful</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Reviews Grid -->
+        <div class="reviews-grid" id="reviewsGrid">
+            <!-- Review 1 -->
+            <div class="review-card" data-rating="5" data-service="car" data-date="2025-01-15">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">AR</div>
+                        <div>
+                            <div class="reviewer-name">Ahmed Rahman
+                                <span class="verified-badge">
+                                    <i class="fas fa-check-circle"></i> Verified
+                                </span>
+                            </div>
+                            <div class="review-date">January 15, 2025</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="review-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                
+                <div class="review-content">
+                    "Excellent car booking service! The driver was professional, arrived 10 minutes early, and the car was spotlessly clean. Will definitely use Quickfixx again for airport transfers."
+                </div>
+                
+                <div class="review-service">
+                    <i class="fas fa-car"></i> Car Booking Service
+                </div>
+                
+                <div class="review-actions">
+                    <button class="action-btn" onclick="likeReview(1)">
+                        <i class="fas fa-thumbs-up"></i> Helpful (24)
+                    </button>
+                    <button class="action-btn" onclick="shareReview(1)">
+                        <i class="fas fa-share"></i> Share
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Review 2 -->
+            <div class="review-card" data-rating="5" data-service="electrical" data-date="2025-01-12">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">FB</div>
+                        <div>
+                            <div class="reviewer-name">Fatima Begum
+                                <span class="verified-badge">
+                                    <i class="fas fa-check-circle"></i> Verified
+                                </span>
+                            </div>
+                            <div class="review-date">January 12, 2025</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="review-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                
+                <div class="review-content">
+                    "Electrical repair was done perfectly! The technician was knowledgeable, fixed our wiring issue in under an hour, and explained everything clearly. Professional service from start to finish."
+                </div>
+                
+                <div class="review-service">
+                    <i class="fas fa-bolt"></i> Electrical Repair
+                </div>
+                
+                <div class="review-images">
+                    <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=200&q=80" alt="Electrical work" class="review-image">
+                </div>
+                
+                <div class="review-actions">
+                    <button class="action-btn" onclick="likeReview(2)">
+                        <i class="fas fa-thumbs-up"></i> Helpful (18)
+                    </button>
+                    <button class="action-btn" onclick="shareReview(2)">
+                        <i class="fas fa-share"></i> Share
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Review 3 -->
+            <div class="review-card" data-rating="4" data-service="plumbing" data-date="2025-01-10">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">KR</div>
+                        <div>
+                            <div class="reviewer-name">Kamal Hossain</div>
+                            <div class="review-date">January 10, 2025</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="review-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                </div>
+                
+                <div class="review-content">
+                    "Good plumbing service. Fixed my kitchen sink leakage effectively. Technician was polite and efficient. Would have been 5 stars if they had the specific part I needed in their van."
+                </div>
+                
+                <div class="review-service">
+                    <i class="fas fa-faucet"></i> Plumbing Service
+                </div>
+                
+                <div class="review-actions">
+                    <button class="action-btn" onclick="likeReview(3)">
+                        <i class="fas fa-thumbs-up"></i> Helpful (12)
+                    </button>
+                    <button class="action-btn" onclick="shareReview(3)">
+                        <i class="fas fa-share"></i> Share
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Review 4 -->
+            <div class="review-card" data-rating="5" data-service="cng" data-date="2025-01-08">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">MA</div>
+                        <div>
+                            <div class="reviewer-name">Mina Akter
+                                <span class="verified-badge">
+                                    <i class="fas fa-check-circle"></i> Verified
+                                </span>
+                            </div>
+                            <div class="review-date">January 8, 2025</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="review-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                
+                <div class="review-content">
+                    "Emergency CNG booking saved the day! My mother needed to reach hospital quickly and Quickfixx arranged a CNG within 15 minutes. Driver was careful and compassionate. Thank you!"
+                </div>
+                
+                <div class="review-service">
+                    <i class="fas fa-tachometer-alt"></i> Emergency CNG
+                </div>
+                
+                <div class="review-actions">
+                    <button class="action-btn" onclick="likeReview(4)">
+                        <i class="fas fa-thumbs-up"></i> Helpful (31)
+                    </button>
+                    <button class="action-btn" onclick="shareReview(4)">
+                        <i class="fas fa-share"></i> Share
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        
+        <!-- Submit Review Section -->
+        <div class="submit-review-section">
+            <h2 style="color: var(--color-primary); margin-bottom: 20px;">
+                <i class="fas fa-edit"></i> Share Your Experience
+            </h2>
+            <p style="color: var(--color-text-light); margin-bottom: 30px;">
+                Used our services? Help others by sharing your honest review.
+            </p>
+            
+            <div class="rating-input">
+                <span class="rating-star" data-value="5">★</span>
+                <span class="rating-star" data-value="4">★</span>
+                <span class="rating-star" data-value="3">★</span>
+                <span class="rating-star" data-value="2">★</span>
+                <span class="rating-star" data-value="1">★</span>
+            </div>
+            
+            <input type="text" class="form-input" placeholder="Your Name" id="reviewerName">
+            <input type="email" class="form-input" placeholder="Your Email (optional)" id="reviewerEmail">
+            
+            <select class="form-input" id="reviewService">
+                <option value="">Select Service Used</option>
+                <option value="car">Car Booking</option>
+                <option value="cng">CNG Booking</option>
+                <option value="electrical">Electrical Service</option>
+                <option value="plumbing">Plumbing Service</option>
+                <option value="ac">AC Service</option>
+                <option value="tech">Tech Setup</option>
+            </select>
+            
+            <textarea class="form-input" placeholder="Share your experience..." rows="5" id="reviewContent"></textarea>
+            
+            <div style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap;">
+                <button onclick="submitReview()" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Submit Review
+                </button>
+                <button onclick="clearReviewForm()" class="btn btn-secondary">
+                    <i class="fas fa-redo"></i> Clear Form
+                </button>
+            </div>
+            
+            <p style="margin-top: 20px; color: var(--color-text-light); font-size: 0.9rem;">
+                <i class="fas fa-info-circle"></i> Your review will be publicly visible after moderation.
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-logo">Quick<span>fixx</span></div>
+                    <p>Real customer feedback driving our service improvements</p>
+                    <p style="margin-top: 15px; font-size: 0.9rem; color: var(--color-accent-silver);">
+                        <i class="fas fa-star"></i> Trusted by 150+ customers
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Review Stats</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-star"></i> 4.8 Average Rating</li>
+                        <li><i class="fas fa-check-circle"></i> 156 Total Reviews</li>
+                        <li><i class="fas fa-thumbs-up"></i> 94% Would Recommend</li>
+                        <li><i class="fas fa-clock"></i> 24/7 Review Submission</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Book a Service</a></li>
+                        <li><a href="dashboard.html">Service Dashboard</a></li>
+                        <li><a href="staff-login.html">Staff Portal</a></li>
+                        <li><a href="#contact">Contact Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Quickfixx Customer Reviews • All reviews are genuine customer feedback</p>
+                <p style="margin-top: 5px; font-size: 0.85rem; color: var(--color-accent-silver);">
+                    <i class="fas fa-shield-alt"></i> We never pay for or manipulate reviews
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== REVIEWS MANAGEMENT SYSTEM =====
+        
+        // Rating stars interaction
+        const ratingStars = document.querySelectorAll('.rating-star');
+        let selectedRating = 0;
+        
+        ratingStars.forEach(star => {
+            star.addEventListener('click', function() {
+                const value = parseInt(this.getAttribute('data-value'));
+                selectedRating = value;
+                
+                // Update star display
+                ratingStars.forEach(s => {
+                    const starValue = parseInt(s.getAttribute('data-value'));
+                    if (starValue <= value) {
+                        s.classList.add('selected');
+                    } else {
+                        s.classList.remove('selected');
+                    }
+                });
+            });
+            
+            // Hover effect
+            star.addEventListener('mouseenter', function() {
+                const value = parseInt(this.getAttribute('data-value'));
+                ratingStars.forEach(s => {
+                    const starValue = parseInt(s.getAttribute('data-value'));
+                    if (starValue <= value) {
+                        s.style.color = 'var(--color-accent-gold)';
+                    }
+                });
+            });
+            
+            star.addEventListener('mouseleave', function() {
+                ratingStars.forEach(s => {
+                    if (!s.classList.contains('selected')) {
+                        s.style.color = 'var(--color-border)';
+                    }
+                });
+            });
+        });
+        
+        // Review filtering
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Update active filter
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                filterReviews(filter);
+            });
+        });
+        
+        function filterReviews(filter) {
+            const reviews = document.querySelectorAll('.review-card');
+            
+            reviews.forEach(review => {
+                const rating = review.getAttribute('data-rating');
+                const date = new Date(review.getAttribute('data-date'));
+                const now = new Date();
+                const daysAgo = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+                
+                let show = true;
+                
+                switch(filter) {
+                    case '5':
+                        show = rating === '5';
+                        break;
+                    case '4':
+                        show = parseInt(rating) >= 4;
+                        break;
+                    case 'recent':
+                        show = daysAgo <= 7;
+                        break;
+                    // 'all' shows everything
+                }
+                
+                review.style.display = show ? 'block' : 'none';
+            });
+        }
+        
+        // Sorting
+        document.getElementById('sortSelect').addEventListener('change', function() {
+            sortReviews(this.value);
+        });
+        
+        function sortReviews(method) {
+            const container = document.getElementById('reviewsGrid');
+            const reviews = Array.from(container.querySelectorAll('.review-card'));
+            
+            reviews.sort((a, b) => {
+                const aRating = parseInt(a.getAttribute('data-rating'));
+                const bRating = parseInt(b.getAttribute('data-rating'));
+                const aDate = new Date(a.getAttribute('data-date'));
+                const bDate = new Date(b.getAttribute('data-date'));
+                // For helpful counts, you would need to store this data
+                const aHelpful = parseInt(a.querySelector('.action-btn')?.textContent.match(/\d+/) || 0);
+                const bHelpful = parseInt(b.querySelector('.action-btn')?.textContent.match(/\d+/) || 0);
+                
+                switch(method) {
+                    case 'newest':
+                        return bDate - aDate;
+                    case 'highest':
+                        return bRating - aRating;
+                    case 'lowest':
+                        return aRating - bRating;
+                    case 'most-helpful':
+                        return bHelpful - aHelpful;
+                    default:
+                        return 0;
+                }
+            });
+            
+            // Clear and re-add sorted reviews
+            container.innerHTML = '';
+            reviews.forEach(review => container.appendChild(review));
+        }
+        
+        // Review submission
+        function submitReview() {
+            const name = document.getElementById('reviewerName').value.trim();
+            const service = document.getElementById('reviewService').value;
+            const content = document.getElementById('reviewContent').value.trim();
+            
+            if (!name) {
+                alert('Please enter your name');
+                return;
+            }
+            
+            if (!service) {
+                alert('Please select a service');
+                return;
+            }
+            
+            if (!content) {
+                alert('Please share your experience');
+                return;
+            }
+            
+            if (selectedRating === 0) {
+                alert('Please select a rating');
+                return;
+            }
+            
+            // Create new review element
+            const reviewCard = document.createElement('div');
+            reviewCard.className = 'review-card';
+            reviewCard.setAttribute('data-rating', selectedRating);
+            reviewCard.setAttribute('data-service', service);
+            reviewCard.setAttribute('data-date', new Date().toISOString().split('T')[0]);
+            
+            const serviceNames = {
+                'car': 'Car Booking',
+                'cng': 'CNG Booking',
+                'electrical': 'Electrical Service',
+                'plumbing': 'Plumbing Service',
+                'ac': 'AC Service',
+                'tech': 'Tech Setup'
+            };
+            
+            const serviceIcons = {
+                'car': 'fa-car',
+                'cng': 'fa-tachometer-alt',
+                'electrical': 'fa-bolt',
+                'plumbing': 'fa-faucet',
+                'ac': 'fa-snowflake',
+                'tech': 'fa-wifi'
+            };
+            
+            // Generate stars HTML
+            let starsHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= selectedRating) {
+                    starsHTML += '<i class="fas fa-star"></i>';
+                } else {
+                    starsHTML += '<i class="far fa-star"></i>';
+                }
+            }
+            
+            reviewCard.innerHTML = `
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">${name.charAt(0).toUpperCase()}</div>
+                        <div>
+                            <div class="reviewer-name">${name}</div>
+                            <div class="review-date">Just now</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="review-stars">
+                    ${starsHTML}
+                </div>
+                
+                <div class="review-content">
+                    "${content}"
+                </div>
+                
+                <div class="review-service">
+                    <i class="fas ${serviceIcons[service]}"></i> ${serviceNames[service]}
+                </div>
+                
+                <div class="review-actions">
+                    <button class="action-btn" onclick="likeReview(this)">
+                        <i class="fas fa-thumbs-up"></i> Helpful (0)
+                    </button>
+                    <button class="action-btn" onclick="shareReview(this)">
+                        <i class="fas fa-share"></i> Share
+                    </button>
+                </div>
+            `;
+            
+            // Add to the beginning of reviews grid
+            document.getElementById('reviewsGrid').prepend(reviewCard);
+            
+            // Clear form
+            clearReviewForm();
+            
+            // Show success message
+            alert('Thank you for your review! It will be visible to others after moderation.');
+            
+            // Update overall rating (simulated)
+            updateOverallRating();
+        }
+        
+        function clearReviewForm() {
+            document.getElementById('reviewerName').value = '';
+            document.getElementById('reviewerEmail').value = '';
+            document.getElementById('reviewService').value = '';
+            document.getElementById('reviewContent').value = '';
+            selectedRating = 0;
+            ratingStars.forEach(star => {
+                star.classList.remove('selected');
+                star.style.color = 'var(--color-border)';
+            });
+        }
+        
+        function likeReview(button) {
+            const btn = typeof button === 'number' 
+                ? document.querySelectorAll('.action-btn')[button-1]
+                : button;
+            
+            const text = btn.innerHTML;
+            const count = parseInt(text.match(/\d+/)[0]) || 0;
+            btn.innerHTML = `<i class="fas fa-thumbs-up"></i> Helpful (${count + 1})`;
+            
+            // Visual feedback
+            btn.style.color = 'var(--color-accent-gold)';
+            setTimeout(() => {
+                btn.style.color = '';
+            }, 1000);
+        }
+        
+        function shareReview(reviewId) {
+            const reviewCard = typeof reviewId === 'number'
+                ? document.querySelectorAll('.review-card')[reviewId-1]
+                : reviewId.closest('.review-card');
+            
+            const reviewer = reviewCard.querySelector('.reviewer-name').textContent;
+            const rating = reviewCard.querySelector('.review-stars').innerHTML;
+            const content = reviewCard.querySelector('.review-content').textContent;
+            
+            const shareText = `Check out this review for Quickfixx:\n\n"${content}"\n\n- ${reviewer}\n${rating}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Quickfixx Review',
+                    text: shareText,
+                    url: window.location.href
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(shareText);
+                alert('Review copied to clipboard! Share it anywhere.');
+            }
+        }
+        
+        function updateOverallRating() {
+            // Simulate updating overall rating
+            const overallRating = document.querySelector('.overall-rating');
+            const current = parseFloat(overallRating.textContent);
+            const newRating = (current + selectedRating) / 2;
+            overallRating.textContent = newRating.toFixed(1);
+        }
+        
+        // Pagination
+        document.querySelectorAll('.page-btn').forEach((btn, index) => {
+            if (index === 0) return; // Skip first button as it's active
+            
+            btn.addEventListener('click', function() {
+                if (this.querySelector('.fa-chevron-right')) {
+                    // Next page
+                    const active = document.querySelector('.page-btn.active');
+                    const next = active.nextElementSibling;
+                    if (next && !next.querySelector('.fa-chevron-right')) {
+                        active.classList.remove('active');
+                        next.classList.add('active');
+                    }
+                } else {
+                    // Numbered page
+                    document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Simulate loading more reviews
+                    // In a real app, this would fetch from an API
+                }
+            });
+        });
+        
+        // Initialize
+        console.log('Reviews Management System loaded');
+        
+        // Auto-refresh reviews every 5 minutes
+        setInterval(() => {
+            console.log('Checking for new reviews...');
+            // In a real app, this would fetch new reviews from an API
+        }, 300000);
+    </script>
+</body>
+</html>

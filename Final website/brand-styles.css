@@ -1,0 +1,149 @@
+/* brand-styles.css */
+/* Quickfixx Premium Brand System - Unified Styles */
+
+:root {
+    /* ===== PREMIUM COLOR PALETTE ===== */
+    --color-primary: #0F172A;       /* Deep Navy - Trust & Professionalism */
+    --color-primary-light: #1E293B; /* Lighter Navy */
+    --color-accent-gold: #F59E0B;   /* Premium Gold - Action & Value */
+    --color-accent-silver: #94A3B8; /* Silver Gray - Modern & Clean */
+    --color-accent-green: #10B981;  /* Emerald - Success & Trust */
+    --color-accent-red: #EF4444;    /* Coral Red - Urgency */
+    --color-background: #F8FAFC;    /* Light Background */
+    --color-surface: #FFFFFF;       /* Cards & Surfaces */
+    --color-text: #1E293B;          /* Primary Text */
+    --color-text-light: #64748B;    /* Secondary Text */
+    --color-border: #E2E8F0;        /* Borders & Dividers */
+
+    /* ===== DARK MODE ===== */
+    --color-primary-dark: #F8FAFC;
+    --color-primary-light-dark: #F1F5F9;
+    --color-background-dark: #0F172A;
+    --color-surface-dark: #1E293B;
+    --color-text-dark: #F1F5F9;
+    --color-text-light-dark: #94A3B8;
+    --color-border-dark: #334155;
+
+    /* ===== TYPOGRAPHY ===== */
+    --font-heading: 'Poppins', 'Segoe UI', sans-serif;
+    --font-body: 'Inter', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ===== GLOBAL RESETS & BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--color-background);
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ===== COMPONENTS ===== */
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 32px;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    font-family: var(--font-heading);
+}
+
+.btn-primary {
+    background-color: var(--color-accent-gold);
+    color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+}
+
+.btn-primary:hover {
+    background-color: #EAB308;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.35);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-primary);
+    color: var(--color-surface);
+}
+
+/* Cards */
+.card {
+    background-color: var(--color-surface);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+    border: 1px solid var(--color-border);
+}
+
+/* Badges */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.badge-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--color-accent-green);
+}
+
+.badge-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--color-accent-gold);
+}
+
+.badge-emergency {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--color-accent-red);
+}
+
+/* ===== DARK MODE OVERRIDES ===== */
+[data-theme="dark"] {
+    background-color: var(--color-background-dark);
+    color: var(--color-text-dark);
+}
+
+[data-theme="dark"] .card {
+    background-color: var(--color-surface-dark);
+    border-color: var(--color-border-dark);
+}
+
+[data-theme="dark"] .btn-secondary {
+    border-color: var(--color-primary-light-dark);
+    color: var(--color-primary-light-dark);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+    background-color: var(--color-primary-light-dark);
+    color: var(--color-surface-dark);
+}

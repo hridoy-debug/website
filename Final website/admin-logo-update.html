@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quickfixx - Brand Management</title>
+    <link rel="stylesheet" href="brand-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .admin-wrapper {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+            padding: 20px;
+        }
+        
+        [data-theme="dark"] .admin-wrapper {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+        
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(15, 23, 42, 0.1);
+            overflow: hidden;
+        }
+        
+        [data-theme="dark"] .admin-container {
+            background: var(--color-surface-dark);
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .admin-nav {
+            display: flex;
+            gap: 10px;
+            padding: 20px 30px;
+            background: var(--color-background);
+            border-bottom: 1px solid var(--color-border);
+            overflow-x: auto;
+        }
+        
+        [data-theme="dark"] .admin-nav {
+            background: var(--color-background-dark);
+            border-color: var(--color-border-dark);
+        }
+        
+        .nav-tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            color: var(--color-text-light);
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+        
+        .nav-tab.active {
+            background: var(--color-accent-gold);
+            border-color: var(--color-accent-gold);
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            padding: 30px;
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .upload-zone {
+            border: 3px dashed var(--color-border);
+            border-radius: 15px;
+            padding: 60px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 30px 0;
+            background: var(--color-background);
+        }
+        
+        .upload-zone:hover, .upload-zone.dragover {
+            border-color: var(--color-accent-gold);
+            background: rgba(245, 158, 11, 0.05);
+        }
+        
+        .logo-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .logo-preview-item {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        [data-theme="dark"] .logo-preview-item {
+            background: var(--color-surface-dark);
+            border-color: var(--color-border-dark);
+        }
+        
+        .logo-preview-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .logo-preview-img {
+            max-width: 180px;
+            height: 60px;
+            object-fit: contain;
+            margin: 0 auto 15px;
+            display: block;
+        }
+        
+        .color-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .color-option {
+            padding: 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .color-option.selected {
+            border-color: var(--color-text);
+            transform: scale(1.05);
+        }
+        
+        .asset-library {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .asset-item {
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .asset-item:hover {
+            border-color: var(--color-accent-gold);
+            background: rgba(245, 158, 11, 0.05);
+        }
+        
+        .backup-section {
+            background: var(--color-background);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 40px;
+            border: 1px solid var(--color-border);
+        }
+        
+        [data-theme="dark"] .backup-section {
+            background: var(--color-background-dark);
+            border-color: var(--color-border-dark);
+        }
+        
+        @media (max-width: 768px) {
+            .admin-nav {
+                flex-direction: column;
+            }
+            
+            .logo-preview-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .color-picker-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <div class="admin-container">
+            <!-- Header -->
+            <div class="admin-header">
+                <h1 style="font-size: 2.5rem; margin-bottom: 10px;">
+                    <i class="fas fa-palette"></i> Quickfixx Brand Management
+                </h1>
+                <p>Control your brand identity across all platforms</p>
+            </div>
+            
+            <!-- Navigation Tabs -->
+            <div class="admin-nav">
+                <button class="nav-tab active" data-tab="logo">Logo Management</button>
+                <button class="nav-tab" data-tab="colors">Color Scheme</button>
+                <button class="nav-tab" data-tab="assets">Asset Library</button>
+                <button class="nav-tab" data-tab="backup">Backup & Export</button>
+            </div>
+            
+            <!-- Tab 1: Logo Management -->
+            <div class="tab-content active" id="logo-tab">
+                <h2><i class="fas fa-image"></i> Logo Management</h2>
+                <p>Upload and manage logos for different platforms</p>
+                
+                <div class="upload-zone" id="uploadZone">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--color-accent-silver); margin-bottom: 20px;"></i>
+                    <h3>Drag & Drop Logo Files</h3>
+                    <p>Supported formats: PNG, SVG, JPG • Max size: 2MB</p>
+                    <p style="margin-top: 15px; color: var(--color-accent-gold);">
+                        <i class="fas fa-lightbulb"></i> Tip: Use transparent PNG for best results
+                    </p>
+                    <input type="file" id="logoUpload" accept=".png,.jpg,.jpeg,.svg" multiple style="display: none;">
+                </div>
+                
+                <!-- Logo Preview Section -->
+                <h3 style="margin-top: 40px;">Current Logo Versions</h3>
+                <div class="logo-preview-grid">
+                    <div class="logo-preview-item">
+                        <div style="font-size: 0.9rem; color: var(--color-text-light); margin-bottom: 10px;">Main Logo</div>
+                        <img src="assets/images/logo-main.png" alt="Main Logo" class="logo-preview-img" id="previewMain">
+                        <div style="margin-top: 15px;">
+                            <button onclick="updateLogo('main')" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.9rem;">
+                                <i class="fas fa-sync"></i> Update
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="logo-preview-item">
+                        <div style="font-size: 0.9rem; color: var(--color-text-light); margin-bottom: 10px;">Favicon</div>
+                        <img src="assets/images/logo-icon.png" alt="Favicon" class="logo-preview-img" id="previewIcon" style="height: 40px;">
+                        <div style="margin-top: 15px;">
+                            <button onclick="updateLogo('icon')" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.9rem;">
+                                <i class="fas fa-sync"></i> Update
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="logo-preview-item">
+                        <div style="font-size: 0.9rem; color: var(--color-text-light); margin-bottom: 10px;">Dark Mode</div>
+                        <img src="assets/images/logo-dark.png" alt="Dark Logo" class="logo-preview-img" id="previewDark">
+                        <div style="margin-top: 15px;">
+                            <button onclick="updateLogo('dark')" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.9rem;">
+                                <i class="fas fa-sync"></i> Update
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Logo History -->
+                <div class="backup-section">
+                    <h4><i class="fas fa-history"></i> Logo Version History</h4>
+                    <p>Previous versions are automatically saved for 30 days</p>
+                    <div id="logoHistory">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab 2: Color Scheme -->
+            <div class="tab-content" id="colors-tab">
+                <h2><i class="fas fa-fill-drip"></i> Color Scheme Manager</h2>
+                <p>Customize your brand colors across the entire platform</p>
+                
+                <div style="margin: 30px 0; padding: 25px; background: var(--color-background); border-radius: 12px;">
+                    <h4>Current Color Palette</h4>
+                    <div id="currentColors" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px;">
+                        <!-- Colors will be loaded dynamically -->
+                    </div>
+                </div>
+                
+                <h3>Quick Color Presets</h3>
+                <div class="color-picker-grid">
+                    <div class="color-option selected" style="background: #0F172A; color: white;" data-preset="premium">
+                        Premium Navy
+                    </div>
+                    <div class="color-option" style="background: #1E40AF; color: white;" data-preset="professional">
+                        Professional Blue
+                    </div>
+                    <div class="color-option" style="background: #059669; color: white;" data-preset="green">
+                        Eco Green
+                    </div>
+                    <div class="color-option" style="background: #7C3AED; color: white;" data-preset="purple">
+                        Royal Purple
+                    </div>
+                </div>
+                
+                <div style="margin-top: 40px;">
+                    <h4>Custom Color Editor</h4>
+                    <div id="colorEditor">
+                        <!-- Color pickers will be generated here -->
+                    </div>
+                    <button onclick="applyColorScheme()" class="btn btn-primary" style="margin-top: 20px;">
+                        <i class="fas fa-check-circle"></i> Apply New Colors
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Tab 3: Asset Library -->
+            <div class="tab-content" id="assets-tab">
+                <h2><i class="fas fa-images"></i> Brand Asset Library</h2>
+                <p>Manage all your brand images, documents, and templates</p>
+                
+                <div class="upload-zone" id="assetUploadZone">
+                    <i class="fas fa-file-upload" style="font-size: 3rem; color: var(--color-accent-silver); margin-bottom: 20px;"></i>
+                    <h3>Upload Brand Assets</h3>
+                    <p>Business cards, letterheads, social media templates, etc.</p>
+                    <input type="file" id="assetUpload" multiple style="display: none;">
+                </div>
+                
+                <h3 style="margin-top: 40px;">Asset Categories</h3>
+                <div class="asset-library">
+                    <div class="asset-item">
+                        <i class="fas fa-file-pdf fa-2x" style="color: #EF4444;"></i>
+                        <div style="margin-top: 10px; font-weight: 500;">Brand Guidelines</div>
+                    </div>
+                    <div class="asset-item">
+                        <i class="fas fa-id-card fa-2x" style="color: #3B82F6;"></i>
+                        <div style="margin-top: 10px; font-weight: 500;">Business Cards</div>
+                    </div>
+                    <div class="asset-item">
+                        <i class="fas fa-envelope fa-2x" style="color: #10B981;"></i>
+                        <div style="margin-top: 10px; font-weight: 500;">Email Templates</div>
+                    </div>
+                    <div class="asset-item">
+                        <i class="fab fa-facebook fa-2x" style="color: #1877F2;"></i>
+                        <div style="margin-top: 10px; font-weight: 500;">Social Media</div>
+                    </div>
+                    <div class="asset-item">
+                        <i class="fas fa-receipt fa-2x" style="color: #F59E0B;"></i>
+                        <div style="margin-top: 10px; font-weight: 500;">Invoices</div>
+                    </div>
+                    <div class="asset-item">
+                        <i class="fas fa-tshirt fa-2x" style="color: #8B5CF6;"></i>
+                        <div style="margin-top: 10px; font-weight: 500;">Merchandise</div>
+                    </div>
+                </div>
+                
+                <!-- Asset Grid -->
+                <div id="assetGrid" style="margin-top: 30px;">
+                    <!-- Assets will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Tab 4: Backup & Export -->
+            <div class="tab-content" id="backup-tab">
+                <h2><i class="fas fa-database"></i> Backup & Export</h2>
+                <p>Secure your brand assets and settings</p>
+                
+                <div class="backup-section">
+                    <h4><i class="fas fa-shield-alt"></i> Automatic Backups</h4>
+                    <p>Your brand settings are automatically backed up daily</p>
+                    <div style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap;">
+                        <button onclick="createBackup()" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Create Manual Backup
+                        </button>
+                        <button onclick="restoreBackup()" class="btn btn-secondary">
+                            <i class="fas fa-history"></i> Restore from Backup
+                        </button>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 40px;">
+                    <h4><i class="fas fa-file-export"></i> Export Brand Kit</h4>
+                    <p>Download your complete brand assets as a ZIP package</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+                        <div style="background: var(--color-surface); padding: 20px; border-radius: 10px;">
+                            <h5><i class="fas fa-file-archive"></i> Complete Brand Kit</h5>
+                            <p>All logos, colors, and guidelines</p>
+                            <button onclick="exportBrandKit()" class="btn btn-primary" style="margin-top: 10px; width: 100%;">
+                                Download ZIP
+                            </button>
+                        </div>
+                        <div style="background: var(--color-surface); padding: 20px; border-radius: 10px;">
+                            <h5><i class="fas fa-palette"></i> Color Palette Only</h5>
+                            <p>Color codes and swatches</p>
+                            <button onclick="exportColors()" class="btn btn-secondary" style="margin-top: 10px; width: 100%;">
+                                Export JSON
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Backup History -->
+                <div style="margin-top: 40px;">
+                    <h4><i class="fas fa-clock"></i> Backup History</h4>
+                    <div id="backupHistory" style="margin-top: 15px;">
+                        <!-- Backup history will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div style="padding: 25px 30px; border-top: 1px solid var(--color-border); text-align: center; color: var(--color-text-light);">
+                <p>
+                    <a href="private-dashboard.html" style="color: var(--color-primary); text-decoration: none;">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </a> • 
+                    <span id="lastSaved">Last saved: Just now</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== BRAND MANAGEMENT SYSTEM =====
+        
+        // Tab Navigation
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Update active tab
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = this.getAttribute('data-tab');
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+                
+                // Save active tab to localStorage
+                localStorage.setItem('active-admin-tab', tabId);
+            });
+        });
+        
+        // Restore active tab
+        const savedTab = localStorage.getItem('active-admin-tab') || 'logo';
+        document.querySelector(`[data-tab="${savedTab}"]`).click();
+        
+        // Logo Upload Functionality
+        const uploadZone = document.getElementById('uploadZone');
+        const logoUpload = document.getElementById('logoUpload');
+        
+        uploadZone.addEventListener('click', () => logoUpload.click());
+        
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+        
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+        
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            handleLogoFiles(e.dataTransfer.files);
+        });
+        
+        logoUpload.addEventListener('change', (e) => {
+            handleLogoFiles(e.target.files);
+        });
+        
+        function handleLogoFiles(files) {
+            if (files.length === 0) return;
+            
+            const file = files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                // Show preview
+                const previews = document.querySelectorAll('.logo-preview-img');
+                previews.forEach(preview => {
+                    preview.src = e.target.result;
+                });
+                
+                // Save to localStorage
+                localStorage.setItem('quickfixx-logo-update', e.target.result);
+                
+                // Update status
+                document.getElementById('lastSaved').textContent = `Last saved: ${new Date().toLocaleTimeString()}`;
+                
+                // Show success message
+                showNotification('Logo updated successfully!', 'success');
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
+        function updateLogo(type) {
+            alert(`Update ${type} logo functionality ready for backend integration`);
+            // Future: Integrate with actual file system or database
+        }
+        
+        // Color Scheme Management
+        function loadCurrentColors() {
+            const rootStyles = getComputedStyle(document.documentElement);
+            const colors = [
+                { name: 'Primary Navy', var: '--color-primary', value: rootStyles.getPropertyValue('--color-primary') },
+                { name: 'Accent Gold', var: '--color-accent-gold', value: rootStyles.getPropertyValue('--color-accent-gold') },
+                { name: 'Background', var: '--color-background', value: rootStyles.getPropertyValue('--color-background') },
+                { name: 'Surface', var: '--color-surface', value: rootStyles.getPropertyValue('--color-surface') }
+            ];
+            
+            const container = document.getElementById('currentColors');
+            container.innerHTML = colors.map(color => `
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="width: 40px; height: 40px; background: ${color.value}; border-radius: 8px; border: 2px solid var(--color-border);"></div>
+                    <div>
+                        <div style="font-weight: 600;">${color.name}</div>
+                        <div style="font-family: monospace; font-size: 0.9rem; color: var(--color-text-light);">${color.value.trim()}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Load colors on tab switch
+        document.querySelector('[data-tab="colors"]').addEventListener('click', loadCurrentColors);
+        
+        // Color presets
+        const colorPresets = {
+            premium: { primary: '#0F172A', accent: '#F59E0B' },
+            professional: { primary: '#1E40AF', accent: '#3B82F6' },
+            green: { primary: '#059669', accent: '#10B981' },
+            purple: { primary: '#7C3AED', accent: '#8B5CF6' }
+        };
+        
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                const preset = this.getAttribute('data-preset');
+                const colors = colorPresets[preset];
+                
+                // Preview color change
+                document.documentElement.style.setProperty('--color-primary', colors.primary);
+                document.documentElement.style.setProperty('--color-accent-gold', colors.accent);
+                
+                showNotification(`Previewing ${preset} theme`, 'info');
+            });
+        });
+        
+        function applyColorScheme() {
+            // Save to localStorage
+            const primary = getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim();
+            const accent = getComputedStyle(document.documentElement).getPropertyValue('--color-accent-gold').trim();
+            
+            localStorage.setItem('quickfixx-color-scheme', JSON.stringify({ primary, accent }));
+            
+            showNotification('Color scheme applied across all pages!', 'success');
+            document.getElementById('lastSaved').textContent = `Last saved: ${new Date().toLocaleTimeString()}`;
+        }
+        
+        // Asset Library
+        const assetUploadZone = document.getElementById('assetUploadZone');
+        const assetUpload = document.getElementById('assetUpload');
+        
+        assetUploadZone.addEventListener('click', () => assetUpload.click());
+        
+        // Backup Functions
+        function createBackup() {
+            const backupData = {
+                timestamp: new Date().toISOString(),
+                colors: {
+                    primary: getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim(),
+                    accent: getComputedStyle(document.documentElement).getPropertyValue('--color-accent-gold').trim()
+                },
+                logo: localStorage.getItem('quickfixx-logo-update') ? 'exists' : 'none'
+            };
+            
+            // Save backup to localStorage
+            const backups = JSON.parse(localStorage.getItem('quickfixx-backups') || '[]');
+            backups.unshift(backupData);
+            if (backups.length > 10) backups.pop(); // Keep only 10 backups
+            localStorage.setItem('quickfixx-backups', JSON.stringify(backups));
+            
+            updateBackupHistory();
+            showNotification('Backup created successfully!', 'success');
+        }
+        
+        function restoreBackup() {
+            // Future: Implement restore from backup functionality
+            alert('Restore functionality ready for backend integration');
+        }
+        
+        function updateBackupHistory() {
+            const backups = JSON.parse(localStorage.getItem('quickfixx-backups') || '[]');
+            const container = document.getElementById('backupHistory');
+            
+            if (backups.length === 0) {
+                container.innerHTML = '<p style="color: var(--color-text-light);">No backups yet</p>';
+                return;
+            }
+            
+            container.innerHTML = backups.map((backup, index) => `
+                <div style="background: var(--color-surface); padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--color-border);">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600;">Backup ${index + 1}</div>
+                            <div style="font-size: 0.9rem; color: var(--color-text-light);">
+                                ${new Date(backup.timestamp).toLocaleString()}
+                            </div>
+                        </div>
+                        <button onclick="loadBackup(${index})" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.9rem;">
+                            <i class="fas fa-undo"></i> Restore
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Load backup history when tab opens
+        document.querySelector('[data-tab="backup"]').addEventListener('click', updateBackupHistory);
+        
+        // Export Functions
+        function exportBrandKit() {
+            showNotification('Brand kit export ready for backend integration', 'info');
+        }
+        
+        function exportColors() {
+            const colors = {
+                primary: getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim(),
+                accent: getComputedStyle(document.documentElement).getPropertyValue('--color-accent-gold').trim(),
+                background: getComputedStyle(document.documentElement).getPropertyValue('--color-background').trim(),
+                surface: getComputedStyle(document.documentElement).getPropertyValue('--color-surface').trim(),
+                text: getComputedStyle(document.documentElement).getPropertyValue('--color-text').trim()
+            };
+            
+            const dataStr = JSON.stringify(colors, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `quickfixx-colors-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showNotification('Color palette exported!', 'success');
+        }
+        
+        // Utility Functions
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                background: ${type === 'success' ? '#10B981' : type === 'error' ? '#EF4444' : '#3B82F6'};
+                color: white;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 9999;
+                animation: slideIn 0.3s;
+            `;
+            
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // Initialize
+        console.log('Brand Management System loaded');
+        updateBackupHistory();
+        
+        // Auto-save every 5 minutes
+        setInterval(() => {
+            document.getElementById('lastSaved').textContent = `Auto-saved: ${new Date().toLocaleTimeString()}`;
+        }, 300000);
+    </script>
+    
+    <style>
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    </style>
+</body>
+</html>

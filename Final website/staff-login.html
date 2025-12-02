@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quickfixx Staff Login</title>
+    <link rel="stylesheet" href="brand-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+        .login-box { background: white; padding: 50px 40px; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); max-width: 450px; width: 90%; text-align: center; }
+        .logo { font-family: 'Poppins', sans-serif; font-size: 36px; font-weight: 700; color: #0F172A; margin-bottom: 10px; }
+        .logo span { color: #F59E0B; }
+        .password-container { position: relative; margin: 25px 0; }
+        .password-container input { width: 100%; padding: 15px; border: 2px solid #E2E8F0; border-radius: 8px; font-size: 16px; }
+        .login-btn { background: #F59E0B; color: #0F172A; border: none; padding: 16px; width: 100%; border-radius: 8px; font-size: 18px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <div class="logo"><i class="fas fa-tools"></i> Quick<span>fixx</span></div>
+        <h2><i class="fas fa-lock"></i> Staff Portal</h2>
+        
+        <div class="password-container">
+            <input type="password" id="password" placeholder="Enter staff password" autocomplete="off">
+        </div>
+        
+        <button class="login-btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Access Dashboard</button>
+        
+        <div id="errorMessage" style="color: #EF4444; margin-top: 15px; display: none;">
+            <i class="fas fa-exclamation-circle"></i> Incorrect password
+        </div>
+        
+        <a href="index.html" style="display: block; margin-top: 30px; color: #64748B; text-decoration: none;">
+            <i class="fas fa-arrow-left"></i> Back to Main Website
+        </a>
+    </div>
+
+    <script>
+        // 🔐 CHANGE THIS PASSWORD BEFORE LAUNCHING!
+        const CORRECT_PASSWORD = "Ridoy1029"; // ⚠️ REPLACE WITH YOUR SECURE PASSWORD
+        
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const enteredPassword = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (enteredPassword === CORRECT_PASSWORD) {
+                // Save session for 8 hours
+                const expires = new Date(Date.now() + 8 * 60 * 60 * 1000).toUTCString();
+                document.cookie = `quickfixx_staff=true; expires=${expires}; path=/`;
+                window.location.href = 'private-dashboard.html';
+            } else {
+                errorMessage.style.display = 'block';
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+        });
+        
+        // Press Enter to login
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') document.getElementById('loginBtn').click();
+        });
+    </script>
+</body>
+</html>

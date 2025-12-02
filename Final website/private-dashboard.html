@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quickfixx - Operations Dashboard</title>
+    <link rel="stylesheet" href="brand-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ===== DASHBOARD-SPECIFIC STYLES ===== */
+        .dashboard-wrapper {
+            min-height: 100vh;
+            background-color: var(--color-background);
+            color: var(--color-text);
+        }
+        
+        [data-theme="dark"] .dashboard-wrapper {
+            background-color: var(--color-background-dark);
+            color: var(--color-text-dark);
+        }
+        
+        /* Dashboard Header */
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            color: white;
+            padding: 25px 0;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.15);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .dashboard-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .dashboard-logo {
+            height: 50px;
+            width: auto;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            border-radius: 10px;
+        }
+        
+        .dashboard-title {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .dashboard-title span {
+            color: var(--color-accent-gold);
+        }
+        
+        .staff-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .time-display {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
+        }
+        
+        .stat-card {
+            background-color: var(--color-surface);
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 5px solid var(--color-accent-gold);
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        [data-theme="dark"] .stat-card {
+            background-color: var(--color-surface-dark);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-icon {
+            font-size: 2.2rem;
+            color: var(--color-accent-gold);
+            margin-bottom: 15px;
+        }
+        
+        .stat-value {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            line-height: 1;
+            margin: 10px 0;
+        }
+        
+        [data-theme="dark"] .stat-value {
+            color: var(--color-primary-dark);
+        }
+        
+        .stat-label {
+            color: var(--color-text-light);
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+        
+        [data-theme="dark"] .stat-label {
+            color: var(--color-text-light-dark);
+        }
+        
+        .stat-trend {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .trend-up {
+            color: var(--color-accent-green);
+        }
+        
+        .trend-down {
+            color: var(--color-accent-red);
+        }
+        
+        /* Jobs Section */
+        .jobs-section {
+            background-color: var(--color-surface);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+            border: 1px solid var(--color-border);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        [data-theme="dark"] .jobs-section {
+            background-color: var(--color-surface-dark);
+            border-color: var(--color-border-dark);
+        }
+        
+        .section-title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        [data-theme="dark"] .section-title {
+            color: var(--color-primary-dark);
+        }
+        
+        .job-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 8px 18px;
+            background-color: transparent;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            color: var(--color-text-light);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .filter-btn {
+            border-color: var(--color-border-dark);
+            color: var(--color-text-light-dark);
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--color-accent-gold);
+            border-color: var(--color-accent-gold);
+            color: var(--color-primary);
+        }
+        
+        /* Jobs List */
+        .jobs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .job-card {
+            background-color: var(--color-background);
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 5px solid var(--color-primary);
+            transition: all 0.3s ease;
+            border: 1px solid var(--color-border);
+        }
+        
+        [data-theme="dark"] .job-card {
+            background-color: rgba(30, 41, 59, 0.5);
+            border-color: var(--color-border-dark);
+        }
+        
+        .job-card:hover {
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+            transform: translateX(5px);
+        }
+        
+        .job-card.pending {
+            border-left-color: var(--color-accent-gold);
+        }
+        
+        .job-card.in-progress {
+            border-left-color: #3B82F6;
+        }
+        
+        .job-card.completed {
+            border-left-color: var(--color-accent-green);
+        }
+        
+        .job-card.emergency {
+            border-left-color: var(--color-accent-red);
+            animation: pulse-emergency 2s infinite;
+        }
+        
+        @keyframes pulse-emergency {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.2); }
+            70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .job-title {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+        
+        [data-theme="dark"] .job-title {
+            color: var(--color-primary-dark);
+        }
+        
+        .job-status {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-pending {
+            background-color: rgba(245, 158, 11, 0.15);
+            color: var(--color-accent-gold);
+        }
+        
+        .status-progress {
+            background-color: rgba(59, 130, 246, 0.15);
+            color: #3B82F6;
+        }
+        
+        .status-completed {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--color-accent-green);
+        }
+        
+        .status-emergency {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--color-accent-red);
+            font-weight: 700;
+        }
+        
+        .job-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .job-detail {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--color-text-light);
+            font-size: 0.95rem;
+        }
+        
+        [data-theme="dark"] .job-detail {
+            color: var(--color-text-light-dark);
+        }
+        
+        .job-detail i {
+            color: var(--color-accent-silver);
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Staff QR Section */
+        .staff-section {
+            background-color: var(--color-surface);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+            border: 1px solid var(--color-border);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        [data-theme="dark"] .staff-section {
+            background-color: var(--color-surface-dark);
+            border-color: var(--color-border-dark);
+        }
+        
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .staff-card {
+            background-color: var(--color-background);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid var(--color-border);
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .staff-card {
+            background-color: rgba(30, 41, 59, 0.5);
+            border-color: var(--color-border-dark);
+        }
+        
+        .staff-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+        }
+        
+        .staff-avatar {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            margin: 0 auto 20px;
+            border: 4px solid var(--color-accent-gold);
+        }
+        
+        .staff-name {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--color-primary);
+        }
+        
+        [data-theme="dark"] .staff-name {
+            color: var(--color-primary-dark);
+        }
+        
+        .staff-role {
+            color: var(--color-text-light);
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        [data-theme="dark"] .staff-role {
+            color: var(--color-text-light-dark);
+        }
+        
+        .qr-container {
+            margin: 20px auto;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            display: inline-block;
+            border: 1px solid var(--color-border);
+        }
+        
+        .qr-container img {
+            width: 140px;
+            height: 140px;
+            display: block;
+        }
+        
+        /* Quick Actions */
+        .quick-actions-section {
+            margin-bottom: 50px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
+        }
+        
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+        }
+        
+        .action-card {
+            background-color: var(--color-surface);
+            border-radius: 12px;
+            padding: 30px 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--color-border);
+        }
+        
+        [data-theme="dark"] .action-card {
+            background-color: var(--color-surface-dark);
+            border-color: var(--color-border-dark);
+        }
+        
+        .action-card:hover {
+            background-color: var(--color-primary);
+            transform: translateY(-8px);
+            color: white;
+            border-color: var(--color-primary);
+        }
+        
+        .action-card:hover .action-icon,
+        .action-card:hover .action-title,
+        .action-card:hover .action-desc {
+            color: white;
+        }
+        
+        .action-icon {
+            font-size: 2.5rem;
+            color: var(--color-accent-gold);
+            margin-bottom: 20px;
+            transition: color 0.3s ease;
+        }
+        
+        .action-title {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--color-primary);
+            transition: color 0.3s ease;
+        }
+        
+        [data-theme="dark"] .action-title {
+            color: var(--color-primary-dark);
+        }
+        
+        .action-desc {
+            color: var(--color-text-light);
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+        
+        [data-theme="dark"] .action-desc {
+            color: var(--color-text-light-dark);
+        }
+        
+        /* Footer */
+        .dashboard-footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--color-text-light);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--color-border);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        [data-theme="dark"] .dashboard-footer {
+            color: var(--color-text-light-dark);
+            border-top-color: var(--color-border-dark);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-link {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        [data-theme="dark"] .footer-link {
+            color: var(--color-accent-silver);
+        }
+        
+        .footer-link:hover {
+            color: var(--color-accent-gold);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .staff-actions {
+                justify-content: center;
+            }
+            
+            .section-title-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .job-filters {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .job-details-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .staff-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Check Script -->
+    <script>
+        // Simple login check - redirect to staff-login.html if not logged in
+        function checkDashboardAccess() {
+            const cookies = document.cookie.split(';');
+            let hasAccess = false;
+            
+            for (let cookie of cookies) {
+                if (cookie.trim().startsWith('quickfixx_staff=true')) {
+                    hasAccess = true;
+                    break;
+                }
+            }
+            
+            if (!hasAccess) {
+                window.location.href = 'staff-login.html';
+            }
+        }
+        
+        // Check on page load
+        window.onload = checkDashboardAccess;
+    </script>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-wrapper" data-theme="light">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-container">
+                <div class="dashboard-brand">
+                    <!-- Logo will be loaded here -->
+                    <img src="assets/images/logo-main.png" alt="Quickfixx" class="dashboard-logo" id="dashboardLogo">
+                    <div class="dashboard-title">
+                        Quick<span>fixx</span> Operations Dashboard
+                    </div>
+                </div>
+                
+                <div class="staff-actions">
+                    <div class="time-display" id="liveTime">
+                        <i class="fas fa-clock"></i> 
+                        <span id="timeText">Loading...</span>
+                    </div>
+                    <button onclick="logout()" class="btn btn-secondary" style="background: rgba(255,255,255,0.15); color: white; border-color: white;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                    <button onclick="toggleDashboardTheme()" class="btn btn-secondary" style="background: rgba(255,255,255,0.15); color: white; border-color: white;">
+                        <i class="fas fa-moon" id="themeIcon"></i> Theme
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <!-- Stats Overview -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Today's Active Jobs</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> 3 from yesterday
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value">42</div>
+                    <div class="stat-label">Active Customers</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> This month: 187
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-value">4.8★</div>
+                    <div class="stat-label">Customer Rating</div>
+                    <div class="stat-trend">
+                        Based on 89 reviews
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="stat-value">42m</div>
+                    <div class="stat-label">Avg Response Time</div>
+                    <div class="stat-trend trend-down">
+                        <i class="fas fa-arrow-down"></i> Faster than last week
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Today's Jobs -->
+            <section class="jobs-section">
+                <div class="section-title-bar">
+                    <h2 class="section-title">
+                        <i class="fas fa-tasks"></i> Today's Service Jobs
+                    </h2>
+                    
+                    <div class="job-filters">
+                        <button class="filter-btn active" onclick="filterJobs('all')">All Jobs</button>
+                        <button class="filter-btn" onclick="filterJobs('pending')">Pending</button>
+                        <button class="filter-btn" onclick="filterJobs('progress')">In Progress</button>
+                        <button class="filter-btn" onclick="filterJobs('completed')">Completed</button>
+                    </div>
+                </div>
+                
+                <div class="jobs-list" id="jobsList">
+                    <!-- Job 1 - Car Booking -->
+                    <div class="job-card in-progress" data-status="progress">
+                        <div class="job-header">
+                            <h3 class="job-title">Car Booking - Airport Transfer</h3>
+                            <span class="job-status status-progress">IN PROGRESS</span>
+                        </div>
+                        <div class="job-details-grid">
+                            <div class="job-detail">
+                                <i class="fas fa-user"></i>
+                                <div>
+                                    <strong>Customer:</strong> Mr. Ahmed Rahman
+                                </div>
+                            </div>
+                            <div class="job-detail">
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    <strong>Phone:</strong> 017XX-XXXXXX
+                                </div>
+                            </div>
+                            <div class="job-detail">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <strong>Time:</strong> 10:00 AM - 12:00 PM
+                                </div>
+                            </div>
+                            <div class="job-detail">
+                                <i class="fas fa-user-hard-hat"></i>
+                                <div>
+                                    <strong>Driver:</strong> Driver Kamal (CAR-001)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Job 2 - Electrical Fix -->
+                    <div class="job-card pending" data-status="pending">
+                        <div class="job-header">
+                            <h3 class="job-title">Electrical Repair - Dhanmondi</h3>
+                            <span class="job-status status-pending">PENDING</span>
+                        </div>
+                        <div class="job-details-grid">
+                            <div class="job-detail">
+                                <i class="fas fa-user"></i>
+                                <div>
+                                    <strong>Customer:</strong> Ms. Fatima Begum
+                                </div>
+                            </div>
+                            <div class="job-detail">
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    <strong>Phone:</strong> 018XX-XXXXXX
+                                </div>
+                            </div>
+                            <div class="job-detail">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <strong>Scheduled:</strong> 2:30 PM - 4:00 PM
+                                </div>
+                            </div>
+                            <div class="job-detail">
+                                <i class="fas fa-user-hard-hat"></i>
+                                <div>
+                                    <strong>Technician:</strong> Electrician Rahim (ELEC-002)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Job 3 - Plumbing (Completed) -->
+                    <div class="job-card completed" data-status="completed">
+                        <div class="job-header">
+                            <h3 class="job-title">Plumbing Fix - Gulshan Apartment</h3>
+                            <span class="job-status status-completed">COMPLETED</span>
+                        </div>
+                        <div class="job-details-grid">
+                            <div class="job-detail">
+                                <i class="fas fa-user"></i>
+                                <div>
+                                    <strong>Customer:</strong> The Khan Residence
+                                </div>
+                            </div>
+                            <div class="job-detail">
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    <strong>Phone:</strong> 019XX-XXXXXX
+                                </div>
+                            </div>
+                            <div class="job-detail">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <strong>Completed:</strong> 11:15 AM
+                                </div>
+                            </div>
+                            <div class="job-detail">
+                                <i class="fas fa-star"></i>
+                                <div>
+                                    <strong>Rating:</strong> ⭐⭐⭐⭐⭐
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Job 4 - Emergency -->
+                    <div class="job-card emergency" data-status="pending">
+                        <div class="job-header">
+                            <h3 class="job-title">Emergency CNG Booking - Medical</h3>
+                            <span class="job-status status-emergency">URGENT</span>
+                        </div>
+                        <div class="job-details-grid">
+                            <div class="job-detail">
+                                <i class="fas fa-user"></i>
+                                <div>
+                                    <strong>Customer:</strong> Hospital Patient Transfer
+                                </div>
+                            </div>
+                            <div class="job-detail">
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    <strong>Phone:</strong> 016XX-XXXXXX
+                                </div>
+                            </div>
+                            <div class="job-detail">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <strong>Required:</strong> IMMEDIATELY
+                                </div>
+                            </div>
+                            <div class="job-detail">
+                                <i class="fas fa-user-hard-hat"></i>
+                                <div>
+                                    <strong>Driver:</strong> Emergency Driver (CNG-EMG)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Staff & Verification -->
+            <section class="staff-section">
+                <div class="section-title-bar">
+                    <h2 class="section-title">
+                        <i class="fas fa-id-card"></i> Staff Verification QR Codes
+                    </h2>
+                    <p style="color: var(--color-text-light);">Scan to verify technician identity at service location</p>
+                </div>
+                
+                <div class="staff-grid">
+                    <!-- Driver -->
+                    <div class="staff-card">
+                        <div class="staff-avatar">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <h3 class="staff-name">Driver Kamal</h3>
+                        <p class="staff-role">Car Booking Specialist</p>
+                        <p><strong>Staff ID:</strong> DRIVER-001</p>
+                        <p><strong>Vehicle:</strong> Toyota Allion</p>
+                        
+                        <div class="qr-container">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=QUICKFIXX-DRIVER001-KAMAL-VERIFIED" alt="QR Code">
+                        </div>
+                        
+                        <a href="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=QUICKFIXX-DRIVER001-KAMAL-VERIFIED" 
+                           download="Quickfixx-DRIVER001-QR.png"
+                           class="btn btn-secondary" style="margin-top: 15px; padding: 8px 16px; font-size: 0.9rem;">
+                            <i class="fas fa-download"></i> Download QR
+                        </a>
+                    </div>
+                    
+                    <!-- Electrician -->
+                    <div class="staff-card">
+                        <div class="staff-avatar">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="staff-name">Electrician Rahim</h3>
+                        <p class="staff-role">Electrical Services Expert</p>
+                        <p><strong>Staff ID:</strong> ELEC-002</p>
+                        <p><strong>Specialty:</strong> Home Electrical</p>
+                        
+                        <div class="qr-container">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=QUICKFIXX-ELEC002-RAHIM-VERIFIED" alt="QR Code">
+                        </div>
+                        
+                        <a href="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=QUICKFIXX-ELEC002-RAHIM-VERIFIED" 
+                           download="Quickfixx-ELEC002-QR.png"
+                           class="btn btn-secondary" style="margin-top: 15px; padding: 8px 16px; font-size: 0.9rem;">
+                            <i class="fas fa-download"></i> Download QR
+                        </a>
+                    </div>
+                    
+                    <!-- Emergency Team -->
+                    <div class="staff-card">
+                        <div class="staff-avatar">
+                            <i class="fas fa-first-aid"></i>
+                        </div>
+                        <h3 class="staff-name">Emergency Team</h3>
+                        <p class="staff-role">24/7 Quick Response Unit</p>
+                        <p><strong>Team ID:</strong> EMERGENCY-007</p>
+                        <p><strong>Services:</strong> All Emergency</p>
+                        
+                        <div class="qr-container">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=QUICKFIXX-EMERGENCY-TEAM-VERIFIED" alt="QR Code">
+                        </div>
+                        
+                        <a href="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=QUICKFIXX-EMERGENCY-TEAM-VERIFIED" 
+                           download="Quickfixx-EMERGENCY-QR.png"
+                           class="btn btn-secondary" style="margin-top: 15px; padding: 8px 16px; font-size: 0.9rem;">
+                            <i class="fas fa-download"></i> Download QR
+                        </a>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Quick Actions -->
+            <section class="quick-actions-section">
+                <div class="section-title-bar">
+                    <h2 class="section-title">
+                        <i class="fas fa-rocket"></i> Quick Actions
+                    </h2>
+                </div>
+                
+                <div class="actions-grid">
+                    <div class="action-card" onclick="window.open('admin-logo-update.html', '_blank')">
+                        <div class="action-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3 class="action-title">Update Brand Logo</h3>
+                        <p class="action-desc">Change website and dashboard logos instantly</p>
+                    </div>
+                    
+                    <div class="action-card" onclick="window.open('https://docs.google.com/spreadsheets', '_blank')">
+                        <div class="action-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="action-title">Customer Database</h3>
+                        <p class="action-desc">Access all customer records and service history</p>
+                    </div>
+                    
+                    <div class="action-card" onclick="window.location.href='reviews.html'">
+                        <div class="action-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3 class="action-title">Customer Reviews</h3>
+                        <p class="action-desc">View and manage customer feedback</p>
+                    </div>
+                    
+                    <div class="action-card" onclick="window.open('https://calendar.google.com', '_blank')">
+                        <div class="action-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3 class="action-title">Booking Calendar</h3>
+                        <p class="action-desc">Manage upcoming appointments and schedules</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Dashboard Footer -->
+            <footer class="dashboard-footer">
+                <p>
+                    <i class="fas fa-shield-alt"></i> 
+                    <strong>Secure Operations Dashboard</strong> • Contains confidential business information
+                </p>
+                <p style="margin-top: 10px; font-size: 0.85rem;">
+                    Last updated: <span id="currentDate">Loading...</span> • 
+                    Session expires in: <span id="sessionTimer">08:00:00</span>
+                </p>
+                
+                <div class="footer-links">
+                    <a href="dashboard.html" class="footer-link">Public Dashboard</a>
+                    <a href="index.html" class="footer-link">Main Website</a>
+                    <a href="staff-login.html" class="footer-link">Staff Login</a>
+                    <a href="reviews.html" class="footer-link">Customer Reviews</a>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // ===== DASHBOARD FUNCTIONALITY =====
+        
+        // Live Time Update
+        function updateLiveTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-BD', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true 
+            });
+            
+            const dateString = now.toLocaleDateString('en-BD', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            document.getElementById('timeText').textContent = timeString + ' | BD Time';
+            document.getElementById('currentDate').textContent = dateString;
+        }
+        
+        // Update immediately and every second
+        updateLiveTime();
+        setInterval(updateLiveTime, 1000);
+        
+        // Session Timer
+        function startSessionTimer() {
+            let sessionTime = 8 * 60 * 60; // 8 hours in seconds
+            const timerElement = document.getElementById('sessionTimer');
+            
+            function updateTimer() {
+                const hours = Math.floor(sessionTime / 3600);
+                const minutes = Math.floor((sessionTime % 3600) / 60);
+                const seconds = sessionTime % 60;
+                
+                timerElement.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                sessionTime--;
+                
+                if (sessionTime < 0) {
+                    clearInterval(timerInterval);
+                    alert('Session expired for security. Please login again.');
+                    logout();
+                }
+            }
+            
+            updateTimer();
+            const timerInterval = setInterval(updateTimer, 1000);
+        }
+        
+        // Start session timer
+        startSessionTimer();
+        
+        // Job Filtering
+        function filterJobs(status) {
+            const jobs = document.querySelectorAll('.job-card');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            
+            // Update active button
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Show/hide jobs
+            jobs.forEach(job => {
+                const jobStatus = job.getAttribute('data-status');
+                
+                if (status === 'all' || jobStatus === status) {
+                    job.style.display = 'block';
+                    setTimeout(() => {
+                        job.style.opacity = '1';
+                        job.style.transform = 'translateX(0)';
+                    }, 10);
+                } else {
+                    job.style.opacity = '0';
+                    job.style.transform = 'translateX(-20px)';
+                    setTimeout(() => {
+                        job.style.display = 'none';
+                    }, 300);
+                }
+            });
+        }
+        
+        // Theme Toggle for Dashboard
+        function toggleDashboardTheme() {
+            const wrapper = document.querySelector('.dashboard-wrapper');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (wrapper.getAttribute('data-theme') === 'light') {
+                wrapper.setAttribute('data-theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('dashboard-theme', 'dark');
+            } else {
+                wrapper.setAttribute('data-theme', 'light');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('dashboard-theme', 'light');
+            }
+        }
+        
+        // Load saved theme
+        const savedTheme = localStorage.getItem('dashboard-theme');
+        if (savedTheme === 'dark') {
+            document.querySelector('.dashboard-wrapper').setAttribute('data-theme', 'dark');
+            document.getElementById('themeIcon').classList.remove('fa-moon');
+            document.getElementById('themeIcon').classList.add('fa-sun');
+        }
+        
+        // Logout function
+        function logout() {
+            // Clear the session cookie
+            document.cookie = "quickfixx_staff=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            
+            // Redirect to login page
+            window.location.href = 'staff-login.html';
+        }
+        
+        // Logo updater check
+        function checkForLogoUpdate() {
+            const logoUpdate = localStorage.getItem('quickfixx-logo-update');
+            const dashboardLogo = document.getElementById('dashboardLogo');
+            
+            if (logoUpdate && dashboardLogo) {
+                dashboardLogo.src = logoUpdate;
+                console.log('Dashboard logo updated via admin panel');
+            }
+        }
+        
+        // Check for logo updates
+        checkForLogoUpdate();
+        
+        // Auto-check for logo updates every 30 seconds
+        setInterval(checkForLogoUpdate, 30000);
+        
+        // Initialize dashboard
+        console.log('Quickfixx Operations Dashboard loaded successfully.');
+        console.log('Admin logo update system: ACTIVE');
+    </script>
+</body>
+</html>

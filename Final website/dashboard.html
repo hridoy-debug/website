@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quickfixx - Service Dashboard</title>
+    <link rel="stylesheet" href="brand-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .public-dashboard {
+            background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+            min-height: 100vh;
+        }
+        
+        [data-theme="dark"] .public-dashboard {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+        
+        .dashboard-hero {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            color: white;
+            padding: 100px 0 80px;
+            text-align: center;
+            border-radius: 0 0 30px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dashboard-hero:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1600&q=80') center/cover;
+            opacity: 0.1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .dashboard-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .dashboard-title span {
+            color: var(--color-accent-gold);
+        }
+        
+        .stats-highlight {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 60px auto 0;
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+        }
+        
+        .stat-highlight {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s;
+        }
+        
+        .stat-highlight:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .stat-highlight i {
+            font-size: 2.5rem;
+            color: var(--color-accent-gold);
+            margin-bottom: 15px;
+        }
+        
+        .stat-highlight .number {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .services-showcase {
+            padding: 80px 20px;
+            background: white;
+        }
+        
+        [data-theme="dark"] .services-showcase {
+            background: var(--color-surface-dark);
+        }
+        
+        .services-grid-compact {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .service-compact {
+            background: var(--color-surface);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        [data-theme="dark"] .service-compact {
+            background: var(--color-surface-dark);
+        }
+        
+        .service-compact:hover {
+            border-color: var(--color-accent-gold);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+        }
+        
+        .service-compact i {
+            font-size: 2.2rem;
+            color: var(--color-primary);
+            margin-bottom: 15px;
+        }
+        
+        [data-theme="dark"] .service-compact i {
+            color: var(--color-primary-dark);
+        }
+        
+        .service-compact h4 {
+            color: var(--color-primary);
+            margin-bottom: 10px;
+        }
+        
+        [data-theme="dark"] .service-compact h4 {
+            color: var(--color-primary-dark);
+        }
+        
+        .service-price-tag {
+            background: var(--color-accent-gold);
+            color: var(--color-primary);
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .live-status {
+            padding: 60px 20px;
+            background: var(--color-background);
+        }
+        
+        [data-theme="dark"] .live-status {
+            background: var(--color-background-dark);
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .status-card {
+            background: var(--color-surface);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid var(--color-border);
+        }
+        
+        [data-theme="dark"] .status-card {
+            background: var(--color-surface-dark);
+            border-color: var(--color-border-dark);
+        }
+        
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        .status-active { background: var(--color-accent-green); }
+        .status-busy { background: var(--color-accent-gold); }
+        .status-offline { background: var(--color-accent-silver); }
+        
+        /* Live Activity Feed */
+        .activity-feed {
+            background: var(--color-surface);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 1200px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid var(--color-border);
+        }
+        
+        [data-theme="dark"] .activity-feed {
+            background: var(--color-surface-dark);
+            border-color: var(--color-border-dark);
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--color-accent-gold);
+            color: var(--color-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Performance Chart */
+        .performance-chart {
+            background: var(--color-surface);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 1200px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid var(--color-border);
+        }
+        
+        [data-theme="dark"] .performance-chart {
+            background: var(--color-surface-dark);
+            border-color: var(--color-border-dark);
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        .chart-bar {
+            position: absolute;
+            bottom: 0;
+            width: 40px;
+            background: var(--color-accent-gold);
+            border-radius: 6px 6px 0 0;
+            transition: height 0.5s;
+        }
+        
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            background: rgba(255,255,255,0.15);
+            padding: 12px 25px;
+            border-radius: 8px;
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            transition: all 0.3s;
+        }
+        
+        .back-to-home:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-title {
+                font-size: 2.5rem;
+            }
+            
+            .back-to-home {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 30px;
+                display: inline-block;
+            }
+            
+            .dashboard-hero {
+                padding: 80px 0 60px;
+            }
+            
+            .stats-highlight {
+                gap: 20px;
+            }
+            
+            .stat-highlight .number {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .dashboard-title {
+                font-size: 2rem;
+            }
+            
+            .stat-highlight {
+                padding: 20px;
+            }
+            
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="public-dashboard">
+    <!-- Hero Section -->
+    <section class="dashboard-hero">
+        <a href="index.html" class="back-to-home">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+        
+        <div class="hero-content">
+            <h1 class="dashboard-title">
+                <i class="fas fa-chart-line"></i> Quick<span>fixx</span> Live Dashboard
+            </h1>
+            <p style="font-size: 1.2rem; opacity: 0.9; max-width: 700px; margin: 0 auto;">
+                Real-time service metrics, customer satisfaction, and operational transparency
+            </p>
+            
+            <div class="stats-highlight">
+                <div class="stat-highlight">
+                    <i class="fas fa-check-circle"></i>
+                    <div class="number" id="completedServices">500+</div>
+                    <p>Services Completed</p>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">This month: 156</div>
+                </div>
+                
+                <div class="stat-highlight">
+                    <i class="fas fa-users"></i>
+                    <div class="number" id="happyCustomers">150+</div>
+                    <p>Happy Customers</p>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">Repeat rate: 68%</div>
+                </div>
+                
+                <div class="stat-highlight">
+                    <i class="fas fa-star"></i>
+                    <div class="number" id="avgRating">4.8★</div>
+                    <p>Average Rating</p>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">Based on 89 reviews</div>
+                </div>
+                
+                <div class="stat-highlight">
+                    <i class="fas fa-bolt"></i>
+                    <div class="number" id="responseTime">42m</div>
+                    <p>Avg Response Time</p>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">Target: Under 60m</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Showcase -->
+    <section class="services-showcase">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Service Performance</h2>
+                <p class="section-subtitle">Transparent metrics for each service category</p>
+            </div>
+            
+            <div class="services-grid-compact">
+                <div class="service-compact">
+                    <i class="fas fa-car"></i>
+                    <h4>Car Booking</h4>
+                    <p>Most popular service</p>
+                    <div class="service-price-tag">120+ bookings</div>
+                    <div style="font-size: 0.9rem; color: var(--color-text-light); margin-top: 8px;">Avg rating: 4.9★</div>
+                </div>
+                
+                <div class="service-compact">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <h4>CNG Service</h4>
+                    <p>Fastest response</p>
+                    <div class="service-price-tag">95+ trips</div>
+                    <div style="font-size: 0.9rem; color: var(--color-text-light); margin-top: 8px;">Avg time: 28m</div>
+                </div>
+                
+                <div class="service-compact">
+                    <i class="fas fa-bolt"></i>
+                    <h4>Electrical</h4>
+                    <p>Highest satisfaction</p>
+                    <div class="service-price-tag">4.9★ rating</div>
+                    <div style="font-size: 0.9rem; color: var(--color-text-light); margin-top: 8px;">87 jobs completed</div>
+                </div>
+                
+                <div class="service-compact">
+                    <i class="fas fa-faucet"></i>
+                    <h4>Plumbing</h4>
+                    <p>48-hour guarantee</p>
+                    <div class="service-price-tag">98% success rate</div>
+                    <div style="font-size: 0.9rem; color: var(--color-text-light); margin-top: 8px;">64 jobs completed</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Chart -->
+    <section class="performance-chart">
+        <div class="container">
+            <h2 class="section-title">Service Performance Trends</h2>
+            <p class="section-subtitle">Monthly completion rates and customer satisfaction</p>
+            
+            <div class="chart-container" id="performanceChart">
+                <!-- Chart bars will be generated by JavaScript -->
+            </div>
+            
+            <div style="display: flex; justify-content: center; gap: 30px; margin-top: 20px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="width: 12px; height: 12px; background: var(--color-accent-gold); border-radius: 2px;"></div>
+                    <span>Completed Jobs</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="width: 12px; height: 12px; background: var(--color-accent-green); border-radius: 2px;"></div>
+                    <span>Customer Rating</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Status -->
+    <section class="live-status">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Live Service Status</h2>
+                <p class="section-subtitle">Current availability and team status</p>
+            </div>
+            
+            <div class="status-grid">
+                <div class="status-card">
+                    <div class="status-header">
+                        <h3 style="margin: 0;">Team Availability</h3>
+                        <span class="status-indicator status-active"></span>
+                    </div>
+                    <p><strong>5</strong> technicians online</p>
+                    <p><strong>2</strong> drivers available</p>
+                    <p><strong>24/7</strong> emergency support</p>
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--color-border);">
+                        <small style="color: var(--color-text-light);">Last updated: <span id="teamUpdateTime">Just now</span></small>
+                    </div>
+                </div>
+                
+                <div class="status-card">
+                    <div class="status-header">
+                        <h3 style="margin: 0;">Current Response Time</h3>
+                        <span class="status-indicator status-busy"></span>
+                    </div>
+                    <p><strong>Average:</strong> <span id="liveResponseTime">42</span> minutes</p>
+                    <p><strong>Fastest:</strong> 18 minutes</p>
+                    <p><strong>Target:</strong> Under 60 minutes</p>
+                    <div style="margin-top: 20px;">
+                        <div style="height: 6px; background: var(--color-border); border-radius: 3px; overflow: hidden;">
+                            <div id="responseBar" style="height: 100%; background: var(--color-accent-gold); width: 70%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="status-card">
+                    <div class="status-header">
+                        <h3 style="margin: 0;">Service Areas</h3>
+                        <span class="status-indicator status-active"></span>
+                    </div>
+                    <p>Dhaka (All zones)</p>
+                    <p>Emergency: All Bangladesh</p>
+                    <p>Hours: 8AM-10PM (24/7 emergency)</p>
+                    <div style="margin-top: 20px;">
+                        <button onclick="showServiceAreas()" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.9rem;">
+                            <i class="fas fa-map"></i> View Coverage Map
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Activity Feed -->
+    <section class="activity-feed">
+        <div class="container">
+            <h2 class="section-title">Recent Activity</h2>
+            <p class="section-subtitle">Latest services completed and customer feedback</p>
+            
+            <div id="activityFeed">
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div>
+                        <strong>Car booking completed</strong>
+                        <div style="color: var(--color-text-light); font-size: 0.9rem;">
+                            Airport transfer for Mr. Rahman • 15 minutes ago
+                        </div>
+                    </div>
+                    <div style="margin-left: auto; color: var(--color-accent-green); font-weight: 600;">
+                        ⭐⭐⭐⭐⭐
+                    </div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div>
+                        <strong>Electrical repair completed</strong>
+                        <div style="color: var(--color-text-light); font-size: 0.9rem;">
+                            Dhanmondi residence • 1 hour ago
+                        </div>
+                    </div>
+                    <div style="margin-left: auto; color: var(--color-accent-green); font-weight: 600;">
+                        ⭐⭐⭐⭐
+                    </div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-faucet"></i>
+                    </div>
+                    <div>
+                        <strong>Plumbing service completed</strong>
+                        <div style="color: var(--color-text-light); font-size: 0.9rem;">
+                            Gulshan apartment • 2 hours ago
+                        </div>
+                    </div>
+                    <div style="margin-left: auto; color: var(--color-accent-green); font-weight: 600;">
+                        ⭐⭐⭐⭐⭐
+                    </div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div>
+                        <strong>Emergency CNG booking</strong>
+                        <div style="color: var(--color-text-light); font-size: 0.9rem;">
+                            Medical emergency • 3 hours ago
+                        </div>
+                    </div>
+                    <div style="margin-left: auto; color: var(--color-accent-green); font-weight: 600;">
+                        ⭐⭐⭐⭐⭐
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button onclick="loadMoreActivity()" class="btn btn-secondary">
+                    <i class="fas fa-sync"></i> Load More Activity
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-logo">Quick<span>fixx</span></div>
+                    <p>Transparent service metrics and real-time dashboard</p>
+                    <p style="margin-top: 15px; font-size: 0.9rem; color: var(--color-accent-silver);">
+                        <i class="fas fa-clock"></i> Data updates every 15 minutes
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Dashboard Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Main Website</a></li>
+                        <li><a href="reviews.html">Live Reviews</a></li>
+                        <li><a href="staff-login.html">Staff Portal</a></li>
+                        <li><a href="private-dashboard.html">Operations Dashboard</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Real-time Metrics</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-users"></i> <span id="liveCustomerCount">42</span> active customers</li>
+                        <li><i class="fas fa-tasks"></i> <span id="liveJobCount">12</span> active jobs</li>
+                        <li><i class="fas fa-bolt"></i> <span id="liveResponse">42m</span> avg response</li>
+                        <li><i class="fas fa-star"></i> <span id="liveRating">4.8</span> average rating</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Quickfixx Live Dashboard • Real-time metrics updated every 15 minutes</p>
+                <p style="margin-top: 5px; font-size: 0.85rem; color: var(--color-accent-silver);">
+                    Last updated: <span id="dashboardUpdateTime">Loading...</span>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== PUBLIC DASHBOARD FUNCTIONALITY =====
+        
+        // Update time displays
+        function updateTimeDisplays() {
+            const now = new Date();
+            document.getElementById('dashboardUpdateTime').textContent = now.toLocaleTimeString('en-BD');
+            document.getElementById('teamUpdateTime').textContent = 'Just now';
+        }
+        
+        // Initialize time
+        updateTimeDisplays();
+        setInterval(updateTimeDisplays, 60000); // Update every minute
+        
+        // Simulate live data updates
+        function simulateLiveData() {
+            // Update response time (simulate between 35-50 minutes)
+            const responseTime = Math.floor(Math.random() * 15) + 35;
+            document.getElementById('liveResponseTime').textContent = responseTime;
+            document.getElementById('responseTime').textContent = responseTime + 'm';
+            
+            // Update response bar
+            const percentage = (responseTime / 60) * 100;
+            document.getElementById('responseBar').style.width = Math.min(percentage, 100) + '%';
+            
+            // Update customer count (simulate small variations)
+            const customerCount = document.getElementById('liveCustomerCount');
+            const current = parseInt(customerCount.textContent);
+            const change = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
+            if (current + change >= 40) {
+                customerCount.textContent = current + change;
+            }
+            
+            // Update job count
+            const jobCount = document.getElementById('liveJobCount');
+            const currentJobs = parseInt(jobCount.textContent);
+            const jobChange = Math.floor(Math.random() * 3) - 1;
+            if (currentJobs + jobChange >= 10 && currentJobs + jobChange <= 15) {
+                jobCount.textContent = currentJobs + jobChange;
+            }
+        }
+        
+        // Initial simulation
+        simulateLiveData();
+        setInterval(simulateLiveData, 30000); // Update every 30 seconds
+        
+        // Performance Chart
+        function createPerformanceChart() {
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
+            const jobs = [85, 92, 78, 105, 120, 95, 110];
+            const ratings = [4.7, 4.8, 4.6, 4.9, 4.8, 4.7, 4.9];
+            
+            const chart = document.getElementById('performanceChart');
+            chart.innerHTML = '';
+            
+            const maxJobs = Math.max(...jobs);
+            const barWidth = (100 / months.length) - 2;
+            
+            months.forEach((month, index) => {
+                // Job bar
+                const jobHeight = (jobs[index] / maxJobs) * 100;
+                const jobBar = document.createElement('div');
+                jobBar.className = 'chart-bar';
+                jobBar.style.left = `${(index * (100 / months.length)) + 2}%`;
+                jobBar.style.height = `${jobHeight}%`;
+                jobBar.style.background = 'var(--color-accent-gold)';
+                jobBar.title = `${month}: ${jobs[index]} jobs`;
+                
+                // Rating bar
+                const ratingHeight = (ratings[index] / 5) * 100;
+                const ratingBar = document.createElement('div');
+                ratingBar.className = 'chart-bar';
+                ratingBar.style.left = `${(index * (100 / months.length)) + 2 + barWidth/2}%`;
+                ratingBar.style.height = `${ratingHeight}%`;
+                ratingBar.style.background = 'var(--color-accent-green)';
+                ratingBar.style.width = `${barWidth/2}px`;
+                ratingBar.title = `${month}: ${ratings[index]}★ rating`;
+                
+                chart.appendChild(jobBar);
+                chart.appendChild(ratingBar);
+                
+                // Month label
+                const label = document.createElement('div');
+                label.style.position = 'absolute';
+                label.style.bottom = '-25px';
+                label.style.left = `${(index * (100 / months.length)) + 5}%`;
+                label.style.textAlign = 'center';
+                label.style.fontSize = '0.9rem';
+                label.style.color = 'var(--color-text-light)';
+                label.textContent = month;
+                chart.appendChild(label);
+            });
+        }
+        
+        // Create chart on load
+        window.addEventListener('load', createPerformanceChart);
+        
+        // Activity Feed
+        function loadMoreActivity() {
+            const feed = document.getElementById('activityFeed');
+            const newActivity = document.createElement('div');
+            newActivity.className = 'activity-item';
+            newActivity.innerHTML = `
+                <div class="activity-icon">
+                    <i class="fas fa-snowflake"></i>
+                </div>
+                <div>
+                    <strong>AC Service completed</strong>
+                    <div style="color: var(--color-text-light); font-size: 0.9rem;">
+                        Banani office • Just now
+                    </div>
+                </div>
+                <div style="margin-left: auto; color: var(--color-accent-green); font-weight: 600;">
+                    ⭐⭐⭐⭐⭐
+                </div>
+            `;
+            
+            feed.appendChild(newActivity);
+            
+            // Show notification
+            showToast('New activity loaded!');
+        }
+        
+        function showServiceAreas() {
+            alert('Service coverage map will open here. Future feature: Interactive map integration.');
+        }
+        
+        // Toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: var(--color-accent-gold);
+                color: var(--color-primary);
+                padding: 12px 24px;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 1000;
+                animation: slideUp 0.3s;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideDown 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
+        // Initialize dashboard
+        console.log('Public Dashboard loaded');
+        
+        // Auto-refresh chart every 5 minutes
+        setInterval(createPerformanceChart, 300000);
+        
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideUp {
+                from { transform: translateY(100%); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            @keyframes slideDown {
+                from { transform: translateY(0); opacity: 1; }
+                to { transform: translateY(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

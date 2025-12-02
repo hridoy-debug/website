@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quickfixx | Premium Vehicle Booking & Home Services</title>
+    <link rel="stylesheet" href="brand-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Header & Navigation */
+        .site-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-border);
+            z-index: 1000;
+            padding: 18px 0;
+        }
+        
+        [data-theme="dark"] .site-header {
+            background-color: rgba(30, 41, 59, 0.95);
+            border-bottom-color: var(--color-border-dark);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+        
+        .logo-img {
+            height: 45px;
+            width: auto;
+            border-radius: 8px;
+        }
+        
+        .logo-text {
+            font-family: var(--font-heading);
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+        
+        [data-theme="dark"] .logo-text {
+            color: var(--color-primary-dark);
+        }
+        
+        .logo-text span {
+            color: var(--color-accent-gold);
+        }
+        
+        /* Main Navigation */
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: var(--color-text);
+            font-weight: 500;
+            font-size: 16px;
+            position: relative;
+            padding: 8px 0;
+        }
+        
+        [data-theme="dark"] .nav-link {
+            color: var(--color-text-dark);
+        }
+        
+        .nav-link:hover {
+            color: var(--color-accent-gold);
+        }
+        
+        .nav-link.active {
+            color: var(--color-accent-gold);
+            font-weight: 600;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--color-accent-gold);
+            border-radius: 2px;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            padding: 160px 0 100px;
+            background: linear-gradient(135deg, 
+                rgba(15, 23, 42, 0.97) 0%, 
+                rgba(30, 41, 59, 0.95) 100%),
+                url('https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1200');
+            background-size: cover;
+            background-position: center;
+            color: var(--color-primary-dark);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-accent-silver);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+        
+        .hero-cta-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .call-button {
+            background: linear-gradient(135deg, #F59E0B 0%, #EAB308 100%);
+            color: var(--color-primary);
+            font-size: 1.1rem;
+            padding: 18px 45px;
+            font-weight: 700;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.35);
+            animation: pulse-gold 2s infinite;
+        }
+        
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 8px 25px rgba(245, 158, 11, 0.35); }
+            50% { box-shadow: 0 8px 35px rgba(245, 158, 11, 0.5); }
+            100% { box-shadow: 0 8px 25px rgba(245, 158, 11, 0.35); }
+        }
+        
+        .trust-badges {
+            display: flex;
+            gap: 40px;
+            margin-top: 60px;
+            flex-wrap: wrap;
+        }
+        
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1rem;
+        }
+        
+        .trust-badge i {
+            color: var(--color-accent-gold);
+            font-size: 1.5rem;
+        }
+        
+        /* Services Section */
+        .services-section {
+            padding: 100px 20px;
+            background-color: var(--color-background);
+        }
+        
+        [data-theme="dark"] .services-section {
+            background-color: var(--color-background-dark);
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2.75rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 16px;
+        }
+        
+        [data-theme="dark"] .section-title {
+            color: var(--color-primary-dark);
+        }
+        
+        .section-subtitle {
+            color: var(--color-text-light);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        [data-theme="dark"] .section-subtitle {
+            color: var(--color-text-light-dark);
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .service-card {
+            background-color: var(--color-surface);
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 1px solid var(--color-border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        [data-theme="dark"] .service-card {
+            background-color: var(--color-surface-dark);
+            border-color: var(--color-border-dark);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
+            border-color: var(--color-accent-gold);
+        }
+        
+        .service-icon {
+            height: 80px;
+            width: 80px;
+            background: linear-gradient(135deg, 
+                rgba(245, 158, 11, 0.1) 0%, 
+                rgba(245, 158, 11, 0.05) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            color: var(--color-accent-gold);
+            font-size: 2.2rem;
+        }
+        
+        .service-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--color-primary);
+        }
+        
+        [data-theme="dark"] .service-card h3 {
+            color: var(--color-primary-dark);
+        }
+        
+        .service-card p {
+            color: var(--color-text-light);
+            margin-bottom: 25px;
+        }
+        
+        [data-theme="dark"] .service-card p {
+            color: var(--color-text-light-dark);
+        }
+        
+        .service-price {
+            font-family: var(--font-heading);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--color-accent-gold);
+            margin: 15px 0;
+        }
+        
+        /* Booking Section */
+        .booking-section {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, 
+                rgba(15, 23, 42, 0.03) 0%, 
+                rgba(148, 163, 184, 0.05) 100%);
+        }
+        
+        [data-theme="dark"] .booking-section {
+            background: linear-gradient(135deg, 
+                rgba(30, 41, 59, 0.3) 0%, 
+                rgba(15, 23, 42, 0.4) 100%);
+        }
+        
+        .booking-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .booking-info h2 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--color-primary);
+        }
+        
+        [data-theme="dark"] .booking-info h2 {
+            color: var(--color-primary-dark);
+        }
+        
+        .booking-features {
+            list-style: none;
+            margin: 30px 0;
+        }
+        
+        .booking-features li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+        
+        .booking-features i {
+            color: var(--color-accent-green);
+            font-size: 1.2rem;
+        }
+        
+        /* Footer */
+        .site-footer {
+            background-color: var(--color-primary);
+            color: var(--color-primary-dark);
+            padding: 70px 20px 30px;
+        }
+        
+        [data-theme="dark"] .site-footer {
+            background-color: var(--color-surface-dark);
+            color: var(--color-text-dark);
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+            max-width: 1200px;
+            margin: 0 auto 50px;
+        }
+        
+        .footer-logo {
+            font-family: var(--font-heading);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        [data-theme="dark"] .footer-logo {
+            color: var(--color-primary-dark);
+        }
+        
+        .footer-logo span {
+            color: var(--color-accent-gold);
+        }
+        
+        .footer-heading {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: white;
+        }
+        
+        [data-theme="dark"] .footer-heading {
+            color: var(--color-primary-dark);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: var(--color-accent-silver);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--color-accent-gold);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--color-accent-silver);
+            font-size: 0.9rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--color-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        [data-theme="dark"] .mobile-menu-btn {
+            color: var(--color-primary-dark);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.75rem;
+            }
+            
+            .booking-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .main-nav {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: var(--color-surface);
+                padding: 30px 20px;
+                flex-direction: column;
+                gap: 25px;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s ease;
+                box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+                border-top: 1px solid var(--color-border);
+            }
+            
+            [data-theme="dark"] .main-nav {
+                background-color: var(--color-surface-dark);
+                border-top-color: var(--color-border-dark);
+            }
+            
+            .main-nav.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 20px;
+                width: 100%;
+            }
+            
+            .nav-link {
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+                border-radius: 8px;
+            }
+            
+            .nav-link.active {
+                background-color: rgba(245, 158, 11, 0.1);
+            }
+            
+            .nav-link.active::after {
+                display: none;
+            }
+            
+            .hero-title {
+                font-size: 2.25rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .hero-cta-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .section-title {
+                font-size: 2.25rem;
+            }
+            
+            .trust-badges {
+                gap: 25px;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 1.875rem;
+            }
+            
+            .section-title {
+                font-size: 1.875rem;
+            }
+            
+            .service-card {
+                padding: 30px 20px;
+            }
+            
+            .footer-grid {
+                gap: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <a href="index.html" class="logo-container">
+                <img src="assets/images/logo-main.png" alt="Quickfixx" class="logo-img" id="mainLogo">
+                <div class="logo-text">Quick<span>fixx</span></div>
+            </a>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav class="main-nav" id="mainNav">
+                <div class="nav-links">
+                    <a href="#services" class="nav-link">Services</a>
+                    <a href="#booking" class="nav-link">Book Now</a>
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="reviews.html" class="nav-link">Reviews</a>
+                    <a href="staff-login.html" class="btn btn-secondary">Staff Login</a>
+                    <button id="darkModeToggle" class="btn btn-secondary" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Premium Vehicle & Home Services in Bangladesh</h1>
+            <p class="hero-subtitle">Quickfixx delivers fast, reliable, and verified car/CNG booking and home repair services. Experience safety, speed, and professional care with every call.</p>
+            
+            <div class="hero-cta-group">
+                <a href="tel:+8801537313652" class="call-button">
+                    <i class="fas fa-phone-alt"></i> CALL NOW: +880 1537-313652
+                </a>
+                <a href="#booking" class="btn btn-secondary" style="color: white; border-color: white;">
+                    <i class="fas fa-calendar-check"></i> Online Booking
+                </a>
+            </div>
+            
+            <div class="trust-badges">
+                <div class="trust-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Verified & Safe Providers</span>
+                </div>
+                <div class="trust-badge">
+                    <i class="fas fa-bolt"></i>
+                    <span>Under 60-Minute Response</span>
+                </div>
+                <div class="trust-badge">
+                    <i class="fas fa-star"></i>
+                    <span>4.8/5 Customer Rating</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+        <div class="section-header">
+            <h2 class="section-title">Our Premium Services</h2>
+            <p class="section-subtitle">Professional solutions with transparent pricing and guaranteed satisfaction</p>
+        </div>
+        
+        <div class="services-grid">
+            <!-- Car Booking -->
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-car"></i>
+                </div>
+                <h3>Car Booking Service</h3>
+                <p>Comfortable sedan service with professional drivers for city travel, events, and airport transfers.</p>
+                <div class="service-price">500-600 BDT</div>
+                <p><small>First 2 hours or 10km • Extra 50/km after</small></p>
+            </div>
+            
+            <!-- CNG Booking -->
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <h3>CNG Auto Booking</h3>
+                <p>Quick and affordable CNG auto-rickshaw service for short trips and local commutes across the city.</p>
+                <div class="service-price">200-300 BDT</div>
+                <p><small>First hour or 5km • Best for quick trips</small></p>
+            </div>
+            
+            <!-- Home Electrical -->
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Electrical Services</h3>
+                <p>Professional electrical repairs, fixture installation, wiring checks, and urgent electrical fixes.</p>
+                <div class="service-price">From 400 BDT</div>
+                <p><small>Diagnosis free if service booked</small></p>
+            </div>
+            
+            <!-- Plumbing -->
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-faucet"></i>
+                </div>
+                <h3>Plumbing Solutions</h3>
+                <p>Fix leaks, blockages, and plumbing issues with expert technicians and proper tools.</p>
+                <div class="service-price">From 500 BDT</div>
+                <p><small>Parts extra • 48-hour guarantee</small></p>
+            </div>
+            
+            <!-- AC Service -->
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-snowflake"></i>
+                </div>
+                <h3>AC Maintenance</h3>
+                <p>AC cleaning, gas refill, and general maintenance to keep your cooling systems running efficiently.</p>
+                <div class="service-price">800-1200 BDT</div>
+                <p><small>Full service • Includes checkup</small></p>
+            </div>
+            
+            <!-- Tech Setup -->
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-wifi"></i>
+                </div>
+                <h3>Tech Setup</h3>
+                <p>Wi-Fi configuration, CCTV installation, and smart home device setup by certified technicians.</p>
+                <div class="service-price">From 600 BDT</div>
+                <p><small>Per device • Professional setup</small></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="booking-section">
+        <div class="booking-container">
+            <div class="booking-info">
+                <h2>Book Your Service in 60 Seconds</h2>
+                <p>Quick, transparent, and hassle-free booking process with instant confirmation.</p>
+                
+                <ul class="booking-features">
+                    <li><i class="fas fa-check-circle"></i> <strong>No Hidden Charges:</strong> Transparent pricing upfront</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Verified Providers:</strong> Background-checked professionals</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>48-Hour Guarantee:</strong> Free revisit if issue persists</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Live Tracking:</strong> Track your service provider in real-time</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Bangla Support:</strong> Clear communication in your language</li>
+                </ul>
+                
+                <div style="margin-top: 30px;">
+                    <a href="tel:+8801537313652" class="btn btn-primary" style="margin-right: 15px;">
+                        <i class="fas fa-phone"></i> Call to Book Now
+                    </a>
+                    <a href="dashboard.html" class="btn btn-secondary">
+                        <i class="fas fa-external-link-alt"></i> View Service Dashboard
+                    </a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 style="margin-bottom: 25px; color: var(--color-primary);">Quick Booking Form</h3>
+                <!-- Replace with your actual Google Form link -->
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSda2e2MaEqLuCPQULHbtaN3wlQ2CExDl9IuReBXFMSUcriZ1g/viewform?embedded=true"
+                    width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">
+                    Loading…
+                </iframe>
+                <p style="text-align: center; margin-top: 20px; color: var(--color-text-light);">
+                    <i class="fas fa-lock"></i> Secure form • We'll contact you within 30 minutes
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-logo">Quick<span>fixx</span></div>
+                <p>Premium vehicle booking and home service solutions across Bangladesh. Fast, reliable, and verified.</p>
+                <p style="margin-top: 20px;">
+                    <a href="private-dashboard.html" style="color: var(--color-accent-gold); font-weight: 500;">
+                        <i class="fas fa-cog"></i> Admin Dashboard
+                    </a>
+                </p>
+            </div>
+            
+            <div>
+                <h3 class="footer-heading">Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#services">Our Services</a></li>
+                    <li><a href="#booking">Book Now</a></li>
+                    <li><a href="dashboard.html">Public Dashboard</a></li>
+                    <li><a href="reviews.html">Customer Reviews</a></li>
+                    <li><a href="staff-login.html">Staff Login</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 class="footer-heading">Contact Info</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-phone" style="color: var(--color-accent-silver); margin-right: 10px;"></i> +880 1537-313652</li>
+                    <li><i class="fas fa-envelope" style="color: var(--color-accent-silver); margin-right: 10px;"></i> support@quickfixx.com</li>
+                    <li><i class="fas fa-map-marker-alt" style="color: var(--color-accent-silver); margin-right: 10px;"></i> Serving All Bangladesh</li>
+                    <li><i class="fas fa-clock" style="color: var(--color-accent-silver); margin-right: 10px;"></i> 8:00 AM - 10:00 PM, 7 Days</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Quickfixx Premium Services. All rights reserved. | <a href="#privacy" style="color: var(--color-accent-silver);">Privacy Policy</a> • <a href="#terms" style="color: var(--color-accent-silver);">Terms of Service</a></p>
+            <p style="margin-top: 10px; font-size: 0.85rem;">Designed for Bangladesh with <i class="fas fa-heart" style="color: #EF4444;"></i></p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mainNav = document.getElementById('mainNav');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (mainNav.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (mainNav.classList.contains('active')) {
+                    mainNav.classList.remove('active');
+                    mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+                    mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+                }
+            });
+        });
+        
+        // Dark Mode Functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const htmlElement = document.documentElement;
+        const darkModeIcon = darkModeToggle.querySelector('i');
+        
+        // Check for saved theme
+        const savedTheme = localStorage.getItem('quickfixx-theme');
+        if (savedTheme === 'dark') {
+            htmlElement.setAttribute('data-theme', 'dark');
+            darkModeIcon.classList.remove('fa-moon');
+            darkModeIcon.classList.add('fa-sun');
+        }
+        
+        darkModeToggle.addEventListener('click', () => {
+            if (htmlElement.getAttribute('data-theme') === 'dark') {
+                htmlElement.removeAttribute('data-theme');
+                localStorage.setItem('quickfixx-theme', 'light');
+                darkModeIcon.classList.remove('fa-sun');
+                darkModeIcon.classList.add('fa-moon');
+            } else {
+                htmlElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('quickfixx-theme', 'dark');
+                darkModeIcon.classList.remove('fa-moon');
+                darkModeIcon.classList.add('fa-sun');
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if (this.getAttribute('href') === '#') return;
+                
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Logo updater functionality - This will be enhanced in the admin panel
+        const mainLogo = document.getElementById('mainLogo');
+        
+        // Check for logo updates in localStorage (simple implementation)
+        function checkForLogoUpdate() {
+            const logoUpdate = localStorage.getItem('quickfixx-logo-update');
+            if (logoUpdate) {
+                mainLogo.src = logoUpdate;
+                console.log('Logo updated via admin panel');
+            }
+        }
+        
+        // Check on page load
+        checkForLogoUpdate();
+        
+        // Simple notification for logo update system
+        console.log('Logo update system: Ready. Admin panel can update logos across site.');
+    </script>
+</body>
+</html>
